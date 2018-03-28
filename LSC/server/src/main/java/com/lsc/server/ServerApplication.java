@@ -1,5 +1,7 @@
 package com.lsc.server;
 
+import com.lsc.server.services.CNTKService;
+import com.lsc.server.services.CNTKServiceImpl;
 import com.lsc.server.services.TestService;
 import com.lsc.server.services.TestServiceImpl;
 import org.springframework.boot.SpringApplication;
@@ -16,7 +18,10 @@ public class ServerApplication {
 	}
 
 	@Bean("test")
-	public TestService testService() { return new TestServiceImpl(); };
+	public TestService testService() { return new TestServiceImpl(); }
+
+	@Bean("cntk")
+	public CNTKService cntkService() { return new CNTKServiceImpl(); }
 
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder){
