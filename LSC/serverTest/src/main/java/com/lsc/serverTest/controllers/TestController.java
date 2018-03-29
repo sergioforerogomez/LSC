@@ -19,9 +19,9 @@ public class TestController {
 
     @GetMapping("/test")
     public List<TestDTO> getTest() {
-        return testService.getTests();
+        return this.testService.getTests();
     }
 
     @PostMapping("/test")
-    public TestDTO postTest(@RequestBody TestDTO testDTO) { return testService.postTest(testDTO); }
+    public TestDTO postTest(@RequestBody TestDTO testDTO) { return this.testService.postTest(testDTO); }
 }
