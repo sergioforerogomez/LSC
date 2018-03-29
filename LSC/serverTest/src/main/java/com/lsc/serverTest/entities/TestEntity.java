@@ -8,7 +8,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.sql.Timestamp;
 
+<<<<<<< HEAD
 @Document(collection = "test")
+=======
+@Document
+>>>>>>> 576d31e... Microservice Test added
 @Data
 @Accessors(chain = true)
 public class TestEntity {
