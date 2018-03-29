@@ -1,6 +1,6 @@
-package com.lsc.server.services;
+package com.lsc.serverTest.services;
 
-import com.lsc.server.dtos.TestDTO;
+import com.lsc.serverTest.dtos.TestDTO;
 
 import java.util.List;
 

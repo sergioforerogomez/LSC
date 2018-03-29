@@ -1,7 +1,7 @@
-package com.lsc.server.controllers;
+package com.lsc.serverTest.controllers;
 
-import com.lsc.server.dtos.TestDTO;
-import com.lsc.server.services.TestService;
+import com.lsc.serverTest.dtos.TestDTO;
+import com.lsc.serverTest.services.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
