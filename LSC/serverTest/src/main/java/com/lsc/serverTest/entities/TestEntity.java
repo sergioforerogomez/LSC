@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.sql.Timestamp;
 
-@Document
+@Document(collection = "test")
 @Data
 @Accessors(chain = true)
 public class TestEntity {
