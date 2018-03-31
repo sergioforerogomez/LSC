@@ -1,0 +1,16 @@
+Puertos:
+
+- server: 1234
+- serverTest: 1235
+- cntkTest: 1236
+
+API:
+
+- server:
+- serverTest:
+	- GET /test: Retorna todos los testEntity
+	- POST /test: Añade un test entity
+		- body: test - String
+- cntkTest:
+	- POST /cntk: Evalua una imagen
+		- body: file - Part
