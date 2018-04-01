@@ -2,6 +2,7 @@ Puertos:
 
 - server: 1234
 - serverTest: 1235
+- mongoDB serverTest: 27018
 - cntkTest: 1236
 
 API:
