@@ -1,17 +1,15 @@
+Ip: 18.208.61.61
+
 Puertos:
+- games: 12348
+- mngGames: 12358
 
-- server: 1234
-- serverTest: 1235
-- mongoDB serverTest: 27018
-- cntkTest: 1236
+- dictionary: 12349
+- mngDictionary: 12359
 
-API:
+- common: 12347
 
-- server:
-- serverTest:
-	- GET /test: Retorna todos los testEntity
-	- POST /test: Añade un test entity
-		- body: test - String
-- cntkTest:
-	- POST /cntk: Evalua una imagen
-		- body: file - Part
+- users: 12346
+- mngUsers: 12356
+
+- gateway: 12345
