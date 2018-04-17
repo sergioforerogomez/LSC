@@ -1,7 +1,7 @@
-package com.lsc.gateway.services.common;
+package com.lsc.common.services;
 
-import com.lsc.gateway.dtos.common.LevelOutputDTO;
-import com.lsc.gateway.dtos.common.PracticeOutputDTO;
+import com.lsc.common.dtos.LevelOutputDTO;
+import com.lsc.common.dtos.PracticeOutputDTO;
 
 import java.util.List;
 

@@ -11,4 +11,4 @@ mongod --dbpath ./mongoData/dictionary --port 12359 >> ~/log.log 2>&1 &
 # Media mongo
 mongod --dbpath ./mongoData/media --port 12360 >> ~/log.log 2>&1 &
 
-for file in $(find ./LSC/LSC -name *SNAPSHOT.jar); do java -jar $file >> ~/log.log 2>&1 & done
+for file in $(find ./LSC/LSC -name *SNAPSHOT.jar); do java -Dspring.profiles.active=prod -jar $file >> ~/log.log 2>&1 & done

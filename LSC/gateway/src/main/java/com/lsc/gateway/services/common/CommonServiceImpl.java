@@ -1,6 +1,6 @@
 package com.lsc.gateway.services.common;
 
-import com.lsc.gateway.dtos.common.LevelIOutputDTO;
+import com.lsc.gateway.dtos.common.LevelOutputDTO;
 import com.lsc.gateway.dtos.common.PracticeOutputDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,11 +19,11 @@ public class CommonServiceImpl implements CommonService {
     private String url;
 
     @Override
-    public LevelIOutputDTO getLevelById(String levelId) {
+    public LevelOutputDTO getLevelById(String levelId) {
         String url = this.url + "/level/{levelId}";
         Map<String, Object> params = new HashMap<>();
         params.put("levelId", levelId);
-        return restTemplate.getForObject(url, LevelIOutputDTO.class, params);
+        return restTemplate.getForObject(url, LevelOutputDTO.class, params);
     }
 
     @Override

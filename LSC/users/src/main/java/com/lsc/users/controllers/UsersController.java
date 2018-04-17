@@ -13,7 +13,9 @@ public class UsersController {
     private UsersService usersService;
 
     @Autowired
-    public UsersController(@Qualifier("users") UsersService usersService) { this.usersService = usersService; }
+    public UsersController(@Qualifier("users") UsersService usersService) {
+        this.usersService = usersService;
+    }
 
     @PostMapping("/user")
     public LoginOutputDTO postRegister(@RequestBody RegisterInputDTO registerInputDTO) {

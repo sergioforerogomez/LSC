@@ -1,7 +1,7 @@
 package com.lsc.gateway.controllers;
 
 import com.lsc.gateway.dtos.ErrorDTO;
-import com.lsc.gateway.dtos.common.LevelIOutputDTO;
+import com.lsc.gateway.dtos.common.LevelOutputDTO;
 import com.lsc.gateway.dtos.common.PracticeOutputDTO;
 import com.lsc.gateway.dtos.dictionary.WordInputDTO;
 import com.lsc.gateway.dtos.dictionary.WordOutputDTO;
@@ -82,7 +82,7 @@ public class GatewayController {
 //    Common
 
     @GetMapping("/level/{levelId}")
-    public LevelIOutputDTO getLevelById(@PathVariable String levelId) {
+    public LevelOutputDTO getLevelById(@PathVariable String levelId) {
         return this.commonService.getLevelById(levelId);
     }
 

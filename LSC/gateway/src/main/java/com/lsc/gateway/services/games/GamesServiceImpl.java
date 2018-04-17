@@ -19,7 +19,6 @@ public class GamesServiceImpl implements GamesService {
     @Value("${endpoint.url.games}")
     private String url;
 
-
     @Override
     public PracticeSchemaOutputDTO getPracticeSchemaByCode(String code) {
         String url = this.url + "/practice/schema/{code}";
