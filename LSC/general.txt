@@ -8,6 +8,7 @@ Puertos:
 - mngUsers: 12356
 
 - common: 12347
+- mngCommon: 12357
 
 - games: 12348
 - mngGames: 12358
