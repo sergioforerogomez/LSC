@@ -1,15 +1,19 @@
 Ip: 18.208.61.61
 
 Puertos:
+
+- gateway: 12345
+
+- users: 12346
+- mngUsers: 12356
+
+- common: 12347
+
 - games: 12348
 - mngGames: 12358
 
 - dictionary: 12349
 - mngDictionary: 12359
 
-- common: 12347
-
-- users: 12346
-- mngUsers: 12356
-
-- gateway: 12345
+- media: 12350
+- mngMedia: 12360
