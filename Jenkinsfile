@@ -17,6 +17,15 @@
 					       echo ' Testing'
                  sh " find ./LSC/LSC/ -name 'pom.xml' -exec mvn clean verify -f '{}' \\; "
                  sh " find ./LSC/LSC/ -name 'pom.xml' -exec mvn test -f '{}' \\;"
+                 sh 'ls'
+                 publishHTML (target: [
+                  allowMissing: false,
+                  alwaysLinkToLastBuild: false,
+                  keepAll: true,
+                  reportDir: 'LSC/LSC/serenity/target/site',
+                  reportFiles: 'index.html',
+                  reportName: "RCov Report"
+                ])
             }
         }
         stage('Deploy') {
