@@ -1,12 +1,15 @@
 package com.lsc.gateway.dtos.users;
 
-import com.lsc.gateway.dtos.ErrorDTO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class LoginOutputDTO extends ErrorDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginOutputDTO {
     private String token;
     private String profileId;
 }

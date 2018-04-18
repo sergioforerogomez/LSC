@@ -1,0 +1,48 @@
+[
+	{
+		"levelId": "abecedario y numeros",
+		"color": "#00B1B4",
+		"name": "Abecedario y numeros",
+		"description": "En este nivel podrás practicar las señas que representan el abecedario de la A a la Z y los números del 0 al 9.",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/abecedario+y+numeros.png",
+		"lessons": [
+			"abecedario a-i",
+			"abecedario j-q",
+			"abecedario r-z",
+			"numeros"
+		]
+	},
+	{
+		"levelId": "sustantivos",
+		"color": "#F4AD31",
+		"name": "Sustantivos",
+		"description": "Este nivel te mostrará los pronombres básicos y las señas para referirte a la familia.",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/sustantivos.png",
+		"lessons": [
+			"pronombres",
+			"relaciones"
+		]
+	},
+	{
+		"levelId": "verbos",
+		"color": "#D2503C",
+		"name": "Verbos",
+		"description": "¡Este nivel es un poco más complejo! Aquí practicarás frases combinadas de sustantivos y verbos.",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/verbos.png",
+		"lessons": [
+			"actividades cotidianas",
+			"en el estudio"
+		]
+	},
+	{
+		"levelId": "predicados",
+		"color": "#783089",
+		"name": "Predicados",
+		"description": "¡Parece facil! Pero debes ponerle mucha atención. En este nivel practicarás con oraciones completas usando sustantivos, verbos y predicados.",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/predicados.png",
+		"lessons": [
+			"lugares",
+			"tiempos"
+		]
+	}
+]

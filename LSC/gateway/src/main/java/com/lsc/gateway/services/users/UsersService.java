@@ -1,23 +1,24 @@
 package com.lsc.gateway.services.users;
 
-import com.lsc.gateway.dtos.ErrorDTO;
-import com.lsc.gateway.dtos.users.*;
-import org.springframework.web.multipart.MultipartFile;
+import com.lsc.gateway.dtos.users.AchievementDTO;
+import com.lsc.gateway.dtos.users.LoginInputDTO;
+import com.lsc.gateway.dtos.users.ProfileInputDTO;
+import com.lsc.gateway.dtos.users.RegisterDTO;
 
 import java.util.List;
 
 public interface UsersService {
-    LoginOutputDTO postRegister(RegisterInputDTO registerInputDTO);
+    Object postRegister(RegisterDTO registerDTO);
 
-    LoginOutputDTO postLogin(LoginInputDTO loginInputDTO);
+    Object postLogin(LoginInputDTO loginInputDTO);
 
-    ErrorDTO postLogout();
+    Object getProfileById(String profileId);
 
-    ProfileOutputDTO getProfileById(String profileId);
+    Object putProfileById(String profileId, ProfileInputDTO profileInputDTO);
 
-    ProfileOutputDTO putProfileById(String profileId, ProfileInputDTO profileInputDTO);
+    Object getAchievementById(String achievementId);
 
-    AchievementOutputDTO getAchievementById(String achievementId);
+    Object getAchievements();
 
-    List<String> getAchievements();
+    Object postUserAchievement(List<AchievementDTO> achievementDTOS);
 }

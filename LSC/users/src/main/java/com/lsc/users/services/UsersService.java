@@ -1,21 +1,25 @@
 package com.lsc.users.services;
 
-import com.lsc.users.dtos.*;
+import com.lsc.users.dtos.AchievementDTO;
+import com.lsc.users.dtos.LoginInputDTO;
+import com.lsc.users.dtos.ProfileInputDTO;
+import com.lsc.users.dtos.RegisterDTO;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface UsersService {
-    LoginOutputDTO postRegister(RegisterInputDTO registerInputDTO);
+    ResponseEntity<Object> postRegister(RegisterDTO registerDTO);
 
-    LoginOutputDTO postLogin(LoginInputDTO loginInputDTO);
+    ResponseEntity<Object> postLogin(LoginInputDTO loginInputDTO);
 
-    ErrorDTO postLogout();
+    ResponseEntity<Object> getProfileById(String profileId);
 
-    ProfileOutputDTO getProfileById(String profileId);
+    ResponseEntity<Object> putProfileById(String profileId, ProfileInputDTO profileInputDTO);
 
-    ProfileOutputDTO putProfileById(String profileId, ProfileInputDTO profileInputDTO);
+    ResponseEntity<Object> getAchievementById(String achievementId);
 
-    AchievementOutputDTO getAchievementById(String achievementId);
+    ResponseEntity<Object> getAchievements();
 
-    List<String> getAchievements();
+    ResponseEntity<Object> postUserAchievement(List<AchievementDTO> achievementDTOS);
 }

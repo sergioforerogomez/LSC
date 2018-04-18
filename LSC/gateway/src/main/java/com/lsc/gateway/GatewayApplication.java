@@ -4,10 +4,6 @@ import com.lsc.gateway.services.common.CommonService;
 import com.lsc.gateway.services.common.CommonServiceImpl;
 import com.lsc.gateway.services.dictionary.DictionaryService;
 import com.lsc.gateway.services.dictionary.DictionaryServiceImpl;
-import com.lsc.gateway.services.games.GamesService;
-import com.lsc.gateway.services.games.GamesServiceImpl;
-import com.lsc.gateway.services.media.MediaService;
-import com.lsc.gateway.services.media.MediaServiceImpl;
 import com.lsc.gateway.services.users.UsersService;
 import com.lsc.gateway.services.users.UsersServiceImpl;
 import org.springframework.boot.SpringApplication;
@@ -33,19 +29,9 @@ public class GatewayApplication {
         return new CommonServiceImpl();
     }
 
-    @Bean("games")
-    public GamesService gamesService() {
-        return new GamesServiceImpl();
-    }
-
     @Bean("dictionary")
     public DictionaryService dictionaryService() {
         return new DictionaryServiceImpl();
-    }
-
-    @Bean("media")
-    public MediaService mediaService() {
-        return new MediaServiceImpl();
     }
 
     @Bean

@@ -1,14 +1,21 @@
 package com.lsc.gateway.services.common;
 
-import com.lsc.gateway.dtos.common.LevelOutputDTO;
-import com.lsc.gateway.dtos.common.PracticeOutputDTO;
+import com.lsc.gateway.dtos.common.LessonDTO;
+import com.lsc.gateway.dtos.common.LevelDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface CommonService {
-    LevelOutputDTO getLevelById(String levelId);
+    Object getLevels();
 
-    List<String> getLevels();
+    Object lessonsByLevelId(String levelId);
 
-    PracticeOutputDTO getPracticeById(String practiceId);
+    Object getPracticeByLessonId(String lessonId);
+
+    Object postCNTK(String tag, MultipartFile file);
+
+    Object postCommonLevel(List<LevelDTO> levelsInputDTO);
+
+    Object postCommonLesson(List<LessonDTO> levelsInputDTO);
 }

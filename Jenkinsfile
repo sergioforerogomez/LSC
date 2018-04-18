@@ -3,63 +3,68 @@ pipeline {
     stages {
         stage('Prepare'){
             steps{
-      				// slackSend(color: '#FFFF00', message: "STARTED: Job '${env.pipeline} [${env.}]' (${env})")
-      				sh 'rm -rf LSC Jenkinsfile Dockerfile ; pwd ; ls ; git clone https://github.com/sergioforerogomez/LSC.git'
+				sh 'rm -rf LSC Jenkinsfile Dockerfile ; pwd ; ls ; git clone https://github.com/sergioforerogomez/LSC.git'
             }
         }
+
         stage('Build') {
             steps {
-				sh " find ./LSC/LSC/ -name 'pom.xml' -exec mvn clean package -f '{}' \\;  "
+				sh " find ./LSC/LSC/ -name 'pom.xml' -exec mvn clean install -Dmaven.test.skip -f '{}' \\;  "
             }
         }
+		
         /*stage('Test'){
             steps {
-				        // sh " find ./LSC/LSC/ -name 'pom.xml' -exec mvn clean verify -f '{}' \\; "
-                // sh " find ./LSC/LSC/ -name 'pom.xml' -exec mvn test -f '{}' \\;"
+				sh " find ./LSC/LSC/ -name 'pom.xml' -exec mvn clean verify -f '{}' \\; "
                 publishHTML (target: [
-        					allowMissing: false,
-        					alwaysLinkToLastBuild: false,
-        					keepAll: true,
-        					reportDir: 'LSC/LSC/serenity/target/site/serenity',
-        					reportFiles: 'index.html',
-        					reportName: "Report"
+					allowMissing: false,
+					alwaysLinkToLastBuild: true,
+					keepAll: true,
+					reportDir: 'LSC/LSC/serenity/target/site/serenity',
+					reportFiles: 'index.html',
+					reportName: "Serenity"
                 ])
             }
         }*/
+		
         stage('Deploy') {
             steps {
-            // input 'do you approve deploy?'
+                script {
+					try {
+						sh 'ssh ubuntu@ip-172-31-93-85.ec2.internal killall java'
+      		        }
+                    catch(error) {
+						echo "No java processes found in 172-31-93-85"
+					}
+					try {
+      		            sh 'ssh ubuntu@172.31.95.218 killall java'
+      		        }
+                    catch(error) {
+						echo "No java processes found in 172.31.95.218"
+					}
+      		        try {
+						sh 'ssh ubuntu@ip-172-31-93-85.ec2.internal killall mongod'
+                    }
+                    catch(error) {
+						echo "No mongo processes found in 172-31-93-85"
+      	            }
+					try {
+						sh 'ssh ubuntu@172.31.95.218 killall mongod'
+                    }
+                    catch(error) {
+						echo "No mongo processes in 172.31.95.218 in 172.31.95.218"
+      	            }
+                }
+				
+				// Gateway
+				sh 'scp -r LSC/LSC/gateway LSC/LSC/users ubuntu@ip-172-31-93-85.ec2.internal:/home/ubuntu/LSC/LSC/'
+				sh 'scp -r LSC/gatewaystart.sh ubuntu@ip-172-31-93-85.ec2.internal:/home/ubuntu/'
+				sh 'ssh ubuntu@ip-172-31-93-85.ec2.internal sh gatewaystart.sh'
 
-            script {
-				        try {
-					           sh 'ssh ubuntu@ip-172-31-93-85.ec2.internal killall java'
-		                 sh 'ssh ubuntu@172.31.81.225 killall java'
-		                 }
-                catch(error) {
-					           echo "No java process"
-				        }
-		            try {
-	                   sh 'ssh ubuntu@172.31.81.225 killall mongod'
-                     }
-               catch(error) {
-					          echo "No mongo process"
-	             }
-            }
-            // Gateway
-            sh 'scp -r LSC/ ubuntu@ip-172-31-93-85.ec2.internal:/home/ubuntu/'
-            sh 'ssh ubuntu@ip-172-31-93-85.ec2.internal sh ./LSC/gatewaystart.sh'
-            sh 'ssh ubuntu@ip-172-31-93-85.ec2.internal ps'
-
-            // LSC server
-
-      			sh 'scp -r LSC/ ubuntu@172.31.81.225:/home/ubuntu/'
-            sh 'ssh ubuntu@172.31.81.225 ls'
-            sh 'ssh ubuntu@172.31.81.225 ls LSC/'
-      			sh 'ssh ubuntu@172.31.81.225 rm -rf ./LSC/LSC/gateway/'
-            sh 'ssh ubuntu@172.31.81.225 ls ./LSC/LSC/'
-            sh 'ssh ubuntu@172.31.81.225 find ./LSC/LSC -name *SNAPSHOT.jar'
-            sh 'ssh ubuntu@172.31.81.225 sh ./LSC/javastart.sh'
-            sh 'ssh ubuntu@172.31.81.225 ps'
+				// LSC server
+				sh 'scp -r LSC/LSC/common LSC/LSC/dictionary ubuntu@172.31.95.218:/home/ubuntu/LSC/LSC/'
+				sh 'scp -r LSC/javastart.sh ubuntu@172.31.95.218:/home/ubuntu/'
+				sh 'ssh ubuntu@172.31.95.218 sh javastart.sh'
 			}
         }
     }

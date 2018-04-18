@@ -1,0 +1,32 @@
+[
+	{
+		"title": "¡A deletrear!",
+		"description": "Practica todas las señas del abecedario.",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/a+deletrear.png"
+	},
+	{
+		"title": "¡Llegaste lejos!",
+		"description": "Completa todos los niveles.",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/llegaste+lejos.png"
+	},
+	{
+		"title": "Conteo",
+		"description": "Termina la lección de números.",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/conteo.png"
+	},
+	{
+		"title": "Desbloqueador",
+		"description": "Todos los niveles están bloqueados.",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/desbloqueador.png"
+	},
+	{
+		"title": "Estratégico",
+		"description": "Completa el nivel de verbos.",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/estrategico.png"
+	},
+	{
+		"title": "Lección realizada",
+		"description": "Realiza tu primera lección.",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/leccion+realizada.png"
+	}
+]

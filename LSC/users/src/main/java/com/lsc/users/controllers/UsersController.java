@@ -1,9 +1,13 @@
 package com.lsc.users.controllers;
 
-import com.lsc.users.dtos.*;
+import com.lsc.users.dtos.AchievementDTO;
+import com.lsc.users.dtos.LoginInputDTO;
+import com.lsc.users.dtos.ProfileInputDTO;
+import com.lsc.users.dtos.RegisterDTO;
 import com.lsc.users.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,37 +22,37 @@ public class UsersController {
     }
 
     @PostMapping("/user")
-    public LoginOutputDTO postRegister(@RequestBody RegisterInputDTO registerInputDTO) {
-        return this.usersService.postRegister(registerInputDTO);
+    public ResponseEntity<Object> postRegister(@RequestBody RegisterDTO registerDTO) {
+        return this.usersService.postRegister(registerDTO);
     }
 
     @PostMapping("/login")
-    public LoginOutputDTO postLogin(@RequestBody LoginInputDTO loginInputDTO) {
+    public ResponseEntity<Object> postLogin(@RequestBody LoginInputDTO loginInputDTO) {
         return this.usersService.postLogin(loginInputDTO);
     }
 
-    @PostMapping("/logout")
-    public ErrorDTO postLogout() {
-        return this.usersService.postLogout();
-    }
-
     @GetMapping("/profile/{profileId}")
-    public ProfileOutputDTO getProfileById(@PathVariable String profileId) {
+    public ResponseEntity<Object> getProfileById(@PathVariable String profileId) {
         return this.usersService.getProfileById(profileId);
     }
 
     @PutMapping("/profile/{profileId}")
-    public ProfileOutputDTO putProfileById(@PathVariable String profileId, @RequestBody ProfileInputDTO profileInputDTO) {
+    public ResponseEntity<Object> putProfileById(@PathVariable String profileId, @RequestBody ProfileInputDTO profileInputDTO) {
         return this.usersService.putProfileById(profileId, profileInputDTO);
     }
 
     @GetMapping("/achievement/{achievementId}")
-    public AchievementOutputDTO getAchievementById(@PathVariable String achievementId) {
+    public ResponseEntity<Object> getAchievementById(@PathVariable String achievementId) {
         return this.usersService.getAchievementById(achievementId);
     }
 
     @GetMapping("/achievement")
-    public List<String> getAchievements() {
+    public ResponseEntity<Object> getAchievements() {
         return this.usersService.getAchievements();
+    }
+
+    @PostMapping("/user/achievement")
+    public ResponseEntity<Object> postUserAchievement(@RequestBody List<AchievementDTO> achievementDTOS) {
+        return this.usersService.postUserAchievement(achievementDTOS);
     }
 }

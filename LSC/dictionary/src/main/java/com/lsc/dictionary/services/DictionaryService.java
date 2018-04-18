@@ -1,16 +1,25 @@
 package com.lsc.dictionary.services;
 
-import com.lsc.dictionary.dtos.WordInputDTO;
-import com.lsc.dictionary.dtos.WordOutputDTO;
+import com.lsc.dictionary.dtos.WordDTO;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface DictionaryService {
-    List<String> getWordsByConcept(String concept);
+    ResponseEntity<Object> getWords();
 
-    List<String> getWords();
+    ResponseEntity<Object> getWordByWord(String word);
 
-    WordOutputDTO postWord(WordInputDTO wordInputDTO);
+    ResponseEntity<Object> postWord(WordDTO wordDTO);
 
-    void deleteWord(String word);
+    ResponseEntity<Object> postVideo(MultipartFile videoFile);
+
+    ResponseEntity<Object> postPicture(MultipartFile pictureFile);
+
+    ResponseEntity<Object> putWordByWord(String word, WordDTO wordDTO);
+
+    ResponseEntity<Object> deleteWordByWord(String word);
+
+    ResponseEntity<Object> postDictionary(List<WordDTO> wordDTOS);
 }

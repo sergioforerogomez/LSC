@@ -1,11 +1,12 @@
 package com.lsc.dictionary.controllers;
 
-import com.lsc.dictionary.dtos.WordInputDTO;
-import com.lsc.dictionary.dtos.WordOutputDTO;
+import com.lsc.dictionary.dtos.WordDTO;
 import com.lsc.dictionary.services.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,23 +19,46 @@ public class DictionaryController {
         this.dictionaryService = dictionaryService;
     }
 
-    @GetMapping("/word/{concept}")
-    public List<String> getWordsByConcept(@PathVariable String concept) {
-        return this.dictionaryService.getWordsByConcept(concept);
-    }
-
     @GetMapping("/word")
-    public List<String> getWords() {
+    public ResponseEntity<Object> getWords() {
         return this.dictionaryService.getWords();
     }
 
-    @PostMapping("/word")
-    public WordOutputDTO postWord(@RequestBody WordInputDTO wordInputDTO) {
-        return this.dictionaryService.postWord(wordInputDTO);
+    @GetMapping("/word/{word}")
+    public ResponseEntity<Object> getWordByWord(@PathVariable String word) {
+        return this.dictionaryService.getWordByWord(word);
     }
 
+    @PostMapping("/video")
+    public ResponseEntity<Object> postVideo(@RequestPart("videoFile") MultipartFile videoFile) {
+        return this.dictionaryService.postVideo(videoFile);
+    }
+
+    @PostMapping("/picture")
+    public ResponseEntity<Object> postPicture(@RequestPart("pictureFile") MultipartFile pictureFile) {
+        return this.dictionaryService.postPicture(pictureFile);
+    }
+
+    @CrossOrigin
+    @PostMapping("/word")
+    public ResponseEntity<Object> postWord(@RequestBody WordDTO wordDTO) {
+        return this.dictionaryService.postWord(wordDTO);
+    }
+
+    @CrossOrigin
+    @PutMapping("/word/{word}")
+    public ResponseEntity<Object> postWordByWord(@PathVariable String word, @RequestBody WordDTO wordDTO) {
+        return this.dictionaryService.putWordByWord(word, wordDTO);
+    }
+
+    @CrossOrigin
     @DeleteMapping("/word/{word}")
-    public void deleteWord(@PathVariable String word) {
-        this.dictionaryService.deleteWord(word);
+    public ResponseEntity<Object> deleteWordByWord(@PathVariable String word) {
+        return this.dictionaryService.deleteWordByWord(word);
+    }
+
+    @PostMapping("/dictionary")
+    public ResponseEntity<Object> postDictionary(@RequestBody List<WordDTO> wordDTOS) {
+        return this.dictionaryService.postDictionary(wordDTOS);
     }
 }

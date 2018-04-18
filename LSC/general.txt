@@ -10,11 +10,5 @@ Puertos:
 - common: 12347
 - mngCommon: 12357
 
-- games: 12348
-- mngGames: 12358
-
-- dictionary: 12349
-- mngDictionary: 12359
-
-- media: 12350
-- mngMedia: 12360
+- dictionary: 12348
+- mngDictionary: 12358

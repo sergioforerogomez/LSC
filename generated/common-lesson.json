@@ -1,0 +1,62 @@
+[
+	{
+		"lessonId": "abecedario a-i",
+		"color": "#00B1B4",
+		"name": "Abecedario A-I",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/abecedario+a-i.png"
+	},
+	{
+		"lessonId": "abecedario j-q",
+		"color": "#00B1B4",
+		"name": "Abecedario J-Q",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/abecedario+j-q.png"
+	},
+	{
+		"lessonId": "abecedario r-z",
+		"color": "#00B1B4",
+		"name": "Abecedario R-Z",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/abecedario+r-z.png"
+	},
+	{
+		"lessonId": "numeros",
+		"color": "#783089",
+		"name": "Números",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/numeros.png"
+	},
+	{
+		"lessonId": "pronombres",
+		"color": "#4F84DE",
+		"name": "Pronombres",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/pronombres.png"
+	},
+	{
+		"lessonId": "relaciones",
+		"color": "#F4AD31",
+		"name": "Relaciones",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/relaciones.png"
+	},
+	{
+		"lessonId": "actividades cotidianas",
+		"color": "#FF3D3D",
+		"name": "Actividades cotidianas",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/actividades+cotidianas.png"
+	},
+	{
+		"lessonId": "en el estudio",
+		"color": "#0089BC",
+		"name": "En el estudio",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/en+el+estudio.png"
+	},
+	{
+		"lessonId": "lugares",
+		"color": "#6AF0FF",
+		"name": "Lugares",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/lugares.png"
+	},
+	{
+		"lessonId": "tiempos",
+		"color": "#AF6AFF",
+		"name": "Tiempos",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/tiempos.png"
+	}
+]
