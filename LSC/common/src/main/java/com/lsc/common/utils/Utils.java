@@ -9,74 +9,118 @@ import java.util.stream.IntStream;
 import static java.util.stream.Collectors.toList;
 
 public class Utils {
-    private static Map<String, String> wordSchemaMap;
+    private static Map<String, String> wordsSchemaMap;
     private static Map<String, PracticesInterface> practicesMap;
     private static Map<String, WordsInterface> wordsMap;
 
-    private static void fillWordSchemaMap() {
-        wordSchemaMap = new HashMap<>();
-        wordSchemaMap.put("Abecedario", "Abecedario");
-        wordSchemaMap.put("Números", "Números");
-        wordSchemaMap.put("Pronombres", "Pronombres");
-        wordSchemaMap.put("Relaciones", "Relaciones");
-        wordSchemaMap.put("Actividades cotidianas", "Sustantivo - Actividades cotidianas");
-        wordSchemaMap.put("En el estudio", "Sustantivo - En el estudio");
-        wordSchemaMap.put("Lugares", "Sustantivo - Verbo - Lugares");
-        wordSchemaMap.put("Tiempos", "Sustantivo - Verbo - Lugares - Tiempos");
+    private static void fillWordsSchemaMap() {
+        wordsSchemaMap = new HashMap<>();
+        wordsSchemaMap.put("Abecedario", "Abecedario");
+        wordsSchemaMap.put("Números", "Números");
+        wordsSchemaMap.put("Pronombres", "Pronombres");
+        wordsSchemaMap.put("Relaciones", "Relaciones");
+        wordsSchemaMap.put("Actividades cotidianas", "Sustantivo - Actividades cotidianas");
+        wordsSchemaMap.put("En el estudio", "Sustantivo - En el estudio");
+        wordsSchemaMap.put("Lugares", "Sustantivo - Verbo - Lugares");
+        wordsSchemaMap.put("Tiempos", "Sustantivo - Verbo - Lugares - Tiempos");
     }
 
-    private static String[] copyArrayItself(String[] array) {
-        String[] copy = new String[array.length * 2];
-        for (int i = 0; i < array.length; i++) {
-            copy[i] = array[i];
-            copy[i + array.length] = array[array.length % (array.length - i)];
+    private static String[] getWordsSchemaWithAnswer(String[] wordsSchema, String answer) {
+        wordsSchema[wordsSchema.length - 1] = answer;
+        return wordsSchema;
+    }
+
+    private static String[] alterWordsSchema(List<WordDTO> wordDTOS, String... wordsSchema) {
+        List<String> words = new ArrayList<>();
+        for (String word : wordsSchema) {
+            WordDTO wordDTO = wordsMap.containsKey(word) ? wordsMap.get(word).get(wordDTOS) : wordDTOS.stream().filter((item) -> item.getWord().equals(word)).findFirst().get();
+            wordDTOS.remove(wordDTO);
+            words.add(wordDTO.getWord());
         }
-        return copy;
+        return words.toArray(new String[words.size()]);
+    }
+
+    private static List<String[]> getRandomContent(List<WordDTO> wordDTOS, String[] wordsSchema, int quantity) {
+        List<String[]> content = new ArrayList<>();
+        IntStream.range(0, quantity - 1).forEach((i) ->
+                content.add(alterWordsSchema(wordDTOS, wordsSchema))
+        );
+        return content;
+    }
+
+    private static List<String[]> shuffleArrayToList(String[] array) {
+        List<String> list = Arrays.asList(array);
+        Collections.shuffle(list);
+        List<String[]> arrayList = new ArrayList<>();
+        arrayList.add(list.toArray(new String[list.size()]));
+        return arrayList;
+    }
+
+    private static List<String[]> getRandomWords(List<WordDTO> wordDTOS, String[] answer, int quantity) {
+        String[] content = new String[quantity];
+        List<WordsInterface> valuesList = new ArrayList<>(wordsMap.values());
+        IntStream.range(0, answer.length).forEach((i) -> {
+            content[i] = answer[i];
+        });
+        IntStream.range(answer.length, quantity).forEach((i) -> {
+            WordDTO wordDTO = valuesList.get(new Random().nextInt(valuesList.size())).get(wordDTOS);
+            wordDTOS.remove(wordDTO);
+            content[i] = wordDTO.getWord();
+        });
+        return shuffleArrayToList(content);
+    }
+
+    private static List<Integer> searchAnswerInContent(String[] content, String[] answer) {
+        List<Integer> answerList = new ArrayList<>();
+        for (String word : answer) {
+            answerList.add(IntStream.range(0, content.length).filter((i) -> content[i].equals(word)).findFirst().getAsInt());
+        }
+        return answerList;
     }
 
     private static void fillPracticesMap() {
         practicesMap = new HashMap<>();
-        practicesMap.put("show-sign", (lessonName, wordDTOS, words, word) ->
+        practicesMap.put("show-sign", (lessonName, wordDTOS, wordsSchema, word) ->
                 {
-                    List<String[]> answer = Collections.singletonList(alterWords(wordDTOS, words));
+                    List<String[]> answer = Collections.singletonList(alterWordsSchema(wordDTOS, getWordsSchemaWithAnswer(wordsSchema.clone(), word)));
                     return new PracticeDTO().setCode("show-sign").setVideos(answer).setWords(answer);
                 }
         );
-        practicesMap.put("which-one-videos", (lessonName, wordDTOS, words, word) ->
+        practicesMap.put("take-sign", ((lessonName, wordDTOS, wordsSchema, word) ->
+                new PracticeDTO().setCode("take-sign").setWords(Collections.singletonList(new String[]{word}))
+        ));
+        practicesMap.put("which-one-videos", (lessonName, wordDTOS, wordsSchema, word) ->
                 {
-                    String[] answer = alterWords(wordDTOS, words);
-                    words[words.length - 1] = lessonName;
+                    String[] answer = alterWordsSchema(wordDTOS, getWordsSchemaWithAnswer(wordsSchema.clone(), word));
                     List<String[]> content = new ArrayList<>(Collections.singletonList(answer));
-                    content.addAll(getContent(wordDTOS, words, 4));
+                    content.addAll(getRandomContent(wordDTOS, wordsSchema, 4));
                     Collections.shuffle(content);
                     return new PracticeDTO().setCode("which-one-videos").setVideos(content).setWords(Collections.singletonList(answer)).setAnswer(Collections.singletonList(content.indexOf(answer)));
                 }
         );
-        practicesMap.put("which-one-video", (lessonName, wordDTOS, words, word) ->
+        practicesMap.put("which-one-video", (lessonName, wordDTOS, wordsSchema, word) ->
                 {
-                    String[] answer = alterWords(wordDTOS, words);
-                    words[words.length - 1] = lessonName;
+                    String[] answer = alterWordsSchema(wordDTOS, getWordsSchemaWithAnswer(wordsSchema.clone(), word));
                     List<String[]> content = new ArrayList<>(Collections.singletonList(answer));
-                    content.addAll(getContent(wordDTOS, words, 3));
+                    content.addAll(getRandomContent(wordDTOS, wordsSchema, 3));
                     Collections.shuffle(content);
                     return new PracticeDTO().setCode("which-one-video").setVideos(Collections.singletonList(answer)).setWords(content).setAnswer(Collections.singletonList(content.indexOf(answer)));
                 }
         );
-        practicesMap.put("translate-video", (lessonName, wordDTOS, words, word) ->
+        practicesMap.put("translate-video", (lessonName, wordDTOS, wordsSchema, word) ->
                 {
-                    String[] answer = alterWords(wordDTOS, words);
-                    List<String[]> content = generateRandomWords(wordDTOS, answer, 8);
-                    return new PracticeDTO().setCode("translate-video").setVideos(Collections.singletonList(answer)).setWords(content).setAnswer(searchForAnswer(content, answer));
+                    String[] answer = alterWordsSchema(wordDTOS, getWordsSchemaWithAnswer(wordsSchema.clone(), word));
+                    List<String[]> words = getRandomWords(wordDTOS, answer, 8);
+                    return new PracticeDTO().setCode("translate-video").setVideos(Collections.singletonList(answer)).setWords(words).setAnswer(searchAnswerInContent(words.get(0), answer));
                 }
         );
-        practicesMap.put("discover-image", (lessonName, wordDTOS, words, word) ->
+        practicesMap.put("discover-image", (lessonName, wordDTOS, wordsSchema, word) ->
                 {
-                    String[] answer = alterWords(wordDTOS, words);
-                    words[words.length - 1] = lessonName;
+                    String[] answer = alterWordsSchema(wordDTOS, getWordsSchemaWithAnswer(wordsSchema.clone(), word));
                     List<String[]> content = new ArrayList<>(Collections.singletonList(answer));
-                    content.addAll(getContent(wordDTOS, words, 5));
+                    content.addAll(getRandomContent(wordDTOS, wordsSchema, 5));
                     Collections.shuffle(content);
-                    return new PracticeDTO().setCode("discover-image").setVideos(Collections.singletonList(answer)).setWords(content).setAnswer(Collections.singletonList(content.indexOf(answer)));
+                    return new PracticeDTO().setCode("discover-image").setVideos(Collections.singletonList(answer)).setPictures(content).setAnswer(Collections.singletonList(content.indexOf(answer)));
                 }
         );
     }
@@ -105,80 +149,31 @@ public class Utils {
         wordsMap.put("Tiempos", (wordDTOS) -> getRandomLesson(wordDTOS, "Tiempos"));
     }
 
-    private static String[] alterWords(List<WordDTO> wordDTOS, String... words) {
-        List<String> alteredWords = new ArrayList<>();
-        for (String word : words) {
-            WordDTO wordDTO = wordsMap.containsKey(word) ? wordsMap.get(word).get(wordDTOS) : wordDTOS.stream().filter((item) -> item.getWord().equals(word)).findFirst().get();
-            wordDTOS.remove(wordDTO);
-            alteredWords.add(wordDTO.getWord());
-        }
-        return alteredWords.toArray(new String[alteredWords.size()]);
-    }
-
-    private static List<String[]> getContent(List<WordDTO> wordDTOS, String[] words, int quantity) {
-        List<String[]> content = new ArrayList<>();
-        IntStream.range(0, quantity - 1).forEach((i) ->
-                content.add(alterWords(wordDTOS, words))
-        );
-        return content;
-    }
-
-    private static List<String[]> generateRandomWords(List<WordDTO> wordDTOS, String[] words, int quantity) {
-        String[] content = new String[quantity];
-        List<WordsInterface> valuesList = new ArrayList<>(wordsMap.values());
-        IntStream.range(0, words.length).forEach((i) -> {
-            content[i] = words[i];
-        });
-        IntStream.range(words.length, quantity).forEach((i) -> {
-            WordDTO wordDTO = valuesList.get(new Random().nextInt(valuesList.size())).get(wordDTOS);
-            wordDTOS.remove(wordDTO);
-            content[i] = wordDTO.getWord();
-        });
-        List<String> aux = Arrays.asList(content);
-        Collections.shuffle(aux);
-        List<String[]> contentList = new ArrayList<>();
-        contentList.add(aux.toArray(new String[aux.size()]));
-        return contentList;
-    }
-
-    private static int searchInArray(String[] array, String word) {
-        int answer = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(word)) {
-                answer = i;
-            }
-        }
-        return answer;
-    }
-
-    private static List<Integer> searchForAnswer(List<String[]> content, String[] words) {
-        List<Integer> answer = new ArrayList<>();
-        for (String word : words) {
-            answer.add(searchInArray(content.get(0), word));
-        }
-        return answer;
-    }
-
     private static List<WordDTO> getWordsByLessonName(String lessonName, List<WordDTO> wordDTOS) {
         List<WordDTO> lessonWordDTOS = wordDTOS.stream().filter((item) -> item.getLesson().equals(lessonName)).collect(toList());
         Collections.shuffle(lessonWordDTOS);
         return lessonWordDTOS;
     }
 
-    private static List<PracticeDTO> getRandomPractices(String lessonName, List<WordDTO> wordDTOS, String wordSchema) {
+    private static PracticesInterface getRadomPractice(String lessonName) {
+        List<String> practicesMapKeySet = new ArrayList<>(practicesMap.keySet());
+        practicesMapKeySet.remove("show-sign");
+        practicesMapKeySet.remove("take-sign");
+        return lessonName.equals("Abecedario") || lessonName.equals("Números") ? practicesMap.get("take-sign") : practicesMap.get(practicesMapKeySet.get(new Random().nextInt(practicesMapKeySet.size())));
+    }
+
+    private static List<PracticeDTO> getRandomPractices(String lessonName, List<WordDTO> wordDTOS, String wordsSchema) {
         List<PracticeDTO> practiceDTOS = new ArrayList<>();
         Stack<WordDTO> showSignWords = new Stack<>();
         List<WordDTO> practicesWords = new ArrayList<>();
-        List<PracticesInterface> practiceMapValues = new ArrayList<>(practicesMap.values());
         showSignWords.addAll(getWordsByLessonName(lessonName, wordDTOS));
         while (!showSignWords.isEmpty() || !practicesWords.isEmpty()) {
             if (!showSignWords.isEmpty() && new Random().nextInt() % 2 == 0) {
                 WordDTO wordDTO = showSignWords.pop();
                 practicesWords.add(wordDTO);
-                practiceDTOS.add(practicesMap.get("show-sign").get(lessonName, new ArrayList<>(wordDTOS), wordSchema.split(" - "), wordDTO.getWord()));
+                practiceDTOS.add(practicesMap.get("show-sign").get(lessonName, new ArrayList<>(wordDTOS), wordsSchema.split(" - "), wordDTO.getWord()));
             } else if (!practicesWords.isEmpty()) {
-                WordDTO wordDTO = practicesWords.remove(0);
-                practiceDTOS.add(practiceMapValues.get(new Random().nextInt(practiceMapValues.size())).get(lessonName, new ArrayList<>(wordDTOS), wordSchema.split(" - "), wordDTO.getWord()));
+                practiceDTOS.add(getRadomPractice(lessonName).get(lessonName, new ArrayList<>(wordDTOS), wordsSchema.split(" - "), practicesWords.remove(0).getWord()));
             }
             Collections.shuffle(practicesWords);
         }
@@ -186,8 +181,8 @@ public class Utils {
     }
 
     private static void fill() {
-        if (wordSchemaMap == null) {
-            fillWordSchemaMap();
+        if (wordsSchemaMap == null) {
+            fillWordsSchemaMap();
         }
         if (practicesMap == null) {
             fillPracticesMap();
@@ -199,7 +194,7 @@ public class Utils {
 
     public static List<PracticeDTO> getPracticesByLessonName(String lessonName, List<WordDTO> wordDTOS) {
         fill();
-        String wordSchema = wordSchemaMap.get(lessonName);
-        return getRandomPractices(lessonName, wordDTOS, wordSchema);
+        String wordsSchema = wordsSchemaMap.containsKey(lessonName) ? wordsSchemaMap.get(lessonName) : "";
+        return getRandomPractices(lessonName, wordDTOS, wordsSchema);
     }
 }

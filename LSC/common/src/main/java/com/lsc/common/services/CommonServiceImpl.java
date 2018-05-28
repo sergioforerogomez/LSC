@@ -75,7 +75,7 @@ public class CommonServiceImpl implements CommonService {
             List<PracticeDTO> practiceDTOS = Utils.getPracticesByLessonName(lessonEntity.getName(), wordDTOS);
             return new ResponseEntity<>(this.modelMapper.map(practiceDTOS, PracticeDTO[].class), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al ver la practica, la leccion no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al ver la practica, la lección no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<Object> checkImage(CNTKResponseDTO cntkResponseDTO, String tag) {

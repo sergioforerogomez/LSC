@@ -6,9 +6,7 @@
 		"description": "En este nivel podrás practicar las señas que representan el abecedario de la A a la Z y los números del 0 al 9.",
 		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/abecedario+y+numeros.png",
 		"lessons": [
-			"abecedario a-i",
-			"abecedario j-q",
-			"abecedario r-z",
+			"abecedario",
 			"numeros"
 		]
 	},

@@ -33,6 +33,9 @@ public class UsersServiceImpl implements UsersService {
     private ResponseEntity<Object> validaRegisterPassword(RegisterDTO registerDTO) {
         if (validatePassword(registerDTO.getPassword())) {
             if (validatePasswordAndConfirmPassword(registerDTO.getPassword(), registerDTO.getConfirmPassword())) {
+                ProfileEntity profileEntity = this.modelMapper.map(registerDTO, ProfileEntity.class);
+                profileEntity.setGeneralProgress(0);
+                profileEntity.setProgressName("Básico");
                 this.profileRepository.save(this.modelMapper.map(registerDTO, ProfileEntity.class));
                 return postLogin(new LoginInputDTO(registerDTO.getEmail(), registerDTO.getPassword()));
             }

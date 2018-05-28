@@ -1,21 +1,9 @@
 [
 	{
-		"lessonId": "abecedario a-i",
+		"lessonId": "abecedario",
 		"color": "#00B1B4",
-		"name": "Abecedario A-I",
-		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/abecedario+a-i.png"
-	},
-	{
-		"lessonId": "abecedario j-q",
-		"color": "#00B1B4",
-		"name": "Abecedario J-Q",
-		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/abecedario+j-q.png"
-	},
-	{
-		"lessonId": "abecedario r-z",
-		"color": "#00B1B4",
-		"name": "Abecedario R-Z",
-		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/abecedario+r-z.png"
+		"name": "Abecedario",
+		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/abecedario.png"
 	},
 	{
 		"lessonId": "numeros",

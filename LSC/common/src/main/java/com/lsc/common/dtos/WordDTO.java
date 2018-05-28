@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 public class WordDTO {
     private String word;
     private String video;
+    private String picture;
     private String level;
     private String lesson;
 }
