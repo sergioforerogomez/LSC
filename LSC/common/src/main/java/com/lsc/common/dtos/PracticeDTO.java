@@ -14,7 +14,7 @@ public class PracticeDTO {
     private String code;
     private List<String[]> videos;
     private List<String[]> words;
-    private List<String[]> pictures;
+    private List<String> pictures;
     private List<Integer> answer;
 
     public PracticeDTO() {

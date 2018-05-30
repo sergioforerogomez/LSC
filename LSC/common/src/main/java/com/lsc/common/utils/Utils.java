@@ -30,20 +30,32 @@ public class Utils {
         return wordsSchema;
     }
 
+    private static String alterWord(List<WordDTO> wordDTOS, String word) {
+        WordDTO wordDTO = wordsMap.containsKey(word) ? wordsMap.get(word).get(wordDTOS) : wordDTOS.stream().filter((item) -> item.getWord().equals(word)).findFirst().get();
+        wordDTOS.remove(wordDTO);
+        return wordDTO.getWord();
+    }
+
     private static String[] alterWordsSchema(List<WordDTO> wordDTOS, String... wordsSchema) {
         List<String> words = new ArrayList<>();
         for (String word : wordsSchema) {
-            WordDTO wordDTO = wordsMap.containsKey(word) ? wordsMap.get(word).get(wordDTOS) : wordDTOS.stream().filter((item) -> item.getWord().equals(word)).findFirst().get();
-            wordDTOS.remove(wordDTO);
-            words.add(wordDTO.getWord());
+            words.add(alterWord(wordDTOS, word));
         }
         return words.toArray(new String[words.size()]);
     }
 
-    private static List<String[]> getRandomContent(List<WordDTO> wordDTOS, String[] wordsSchema, int quantity) {
+    private static List<String[]> getRandomVideosOrWords(List<WordDTO> wordDTOS, String[] wordsSchema, int quantity) {
         List<String[]> content = new ArrayList<>();
         IntStream.range(0, quantity - 1).forEach((i) ->
                 content.add(alterWordsSchema(wordDTOS, wordsSchema))
+        );
+        return content;
+    }
+
+    private static List<String> getRandomPictures(List<WordDTO> wordDTOS, String lessonName, int quantity) {
+        List<String> content = new ArrayList<>();
+        IntStream.range(0, quantity - 1).forEach((i) ->
+                content.add(alterWord(wordDTOS, lessonName))
         );
         return content;
     }
@@ -82,7 +94,7 @@ public class Utils {
         practicesMap = new HashMap<>();
         practicesMap.put("show-sign", (lessonName, wordDTOS, wordsSchema, word) ->
                 {
-                    List<String[]> answer = Collections.singletonList(alterWordsSchema(wordDTOS, getWordsSchemaWithAnswer(wordsSchema.clone(), word)));
+                    List<String[]> answer = Collections.singletonList(new String[]{word});
                     return new PracticeDTO().setCode("show-sign").setVideos(answer).setWords(answer);
                 }
         );
@@ -93,7 +105,7 @@ public class Utils {
                 {
                     String[] answer = alterWordsSchema(wordDTOS, getWordsSchemaWithAnswer(wordsSchema.clone(), word));
                     List<String[]> content = new ArrayList<>(Collections.singletonList(answer));
-                    content.addAll(getRandomContent(wordDTOS, wordsSchema, 4));
+                    content.addAll(getRandomVideosOrWords(wordDTOS, wordsSchema, 4));
                     Collections.shuffle(content);
                     return new PracticeDTO().setCode("which-one-videos").setVideos(content).setWords(Collections.singletonList(answer)).setAnswer(Collections.singletonList(content.indexOf(answer)));
                 }
@@ -102,7 +114,7 @@ public class Utils {
                 {
                     String[] answer = alterWordsSchema(wordDTOS, getWordsSchemaWithAnswer(wordsSchema.clone(), word));
                     List<String[]> content = new ArrayList<>(Collections.singletonList(answer));
-                    content.addAll(getRandomContent(wordDTOS, wordsSchema, 3));
+                    content.addAll(getRandomVideosOrWords(wordDTOS, wordsSchema, 3));
                     Collections.shuffle(content);
                     return new PracticeDTO().setCode("which-one-video").setVideos(Collections.singletonList(answer)).setWords(content).setAnswer(Collections.singletonList(content.indexOf(answer)));
                 }
@@ -116,11 +128,10 @@ public class Utils {
         );
         practicesMap.put("discover-image", (lessonName, wordDTOS, wordsSchema, word) ->
                 {
-                    String[] answer = alterWordsSchema(wordDTOS, getWordsSchemaWithAnswer(wordsSchema.clone(), word));
-                    List<String[]> content = new ArrayList<>(Collections.singletonList(answer));
-                    content.addAll(getRandomContent(wordDTOS, wordsSchema, 5));
+                    List<String> content = new ArrayList<>(Collections.singletonList(word));
+                    content.addAll(getRandomPictures(wordDTOS, lessonName, 5));
                     Collections.shuffle(content);
-                    return new PracticeDTO().setCode("discover-image").setVideos(Collections.singletonList(answer)).setPictures(content).setAnswer(Collections.singletonList(content.indexOf(answer)));
+                    return new PracticeDTO().setCode("discover-image").setVideos(Collections.singletonList(new String[]{word})).setPictures(content).setAnswer(Collections.singletonList(content.indexOf(word)));
                 }
         );
     }
