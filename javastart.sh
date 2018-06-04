@@ -1,6 +1,9 @@
 #!/bin/bash
 touch log.log
 
+#Users mongo
+mongod --dbpath ./mongoData/users --port 12356 >> ~/log.log 2>&1 &
+
 #Common mongo
 mongod --dbpath ./mongoData/common --port 12357 >> ~/log.log 2>&1 &
 
