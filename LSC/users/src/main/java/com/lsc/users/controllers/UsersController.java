@@ -21,7 +21,7 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    @PostMapping("/user")
+    @PostMapping("/register")
     public ResponseEntity<Object> postRegister(@RequestBody RegisterDTO registerDTO) {
         return this.usersService.postRegister(registerDTO);
     }

@@ -21,5 +21,9 @@ public interface DictionaryService {
 
     ResponseEntity<Object> deleteWordByWord(String word);
 
+    ResponseEntity<Object> deleteVideoByName(String name);
+
+    ResponseEntity<Object> deletePictureByName(String name);
+
     ResponseEntity<Object> postDictionary(List<WordDTO> wordDTOS);
 }

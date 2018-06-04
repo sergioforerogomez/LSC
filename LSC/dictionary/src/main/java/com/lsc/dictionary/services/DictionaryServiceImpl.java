@@ -6,14 +6,12 @@ import com.lsc.dictionary.dtos.WordDTO;
 import com.lsc.dictionary.entities.WordEntity;
 import com.lsc.dictionary.repositories.WordRepository;
 import com.lsc.dictionary.utils.AmazonClient;
-import org.json.simple.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
@@ -130,14 +128,24 @@ public class DictionaryServiceImpl implements DictionaryService {
     public ResponseEntity<Object> deleteWordByWord(String word) {
         WordEntity wordEntity = findWordByWord(word);
         if (wordEntity != null) {
-            String[] split = wordEntity.getVideo().split("/");
-            String fileName = split[split.length - 1];
             this.amazonClient.deleteFile(this.videoBuckeName, wordEntity.getVideo().substring(wordEntity.getVideo().lastIndexOf("/") + 1));
             this.amazonClient.deleteFile(this.pictureBuckeName, wordEntity.getPicture().substring(wordEntity.getPicture().lastIndexOf("/") + 1));
             this.wordRepository.delete(wordEntity);
             return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new ErrorDTO("Error al eliminar la palabra, la palabra no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<Object> deleteVideoByName(String name) {
+        this.amazonClient.deleteFile(this.videoBuckeName, name);
+        return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> deletePictureByName(String name) {
+        this.amazonClient.deleteFile(this.pictureBuckeName, name);
+        return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.OK);
     }
 
     @Override

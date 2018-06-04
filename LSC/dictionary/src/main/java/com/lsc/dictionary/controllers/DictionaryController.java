@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class DictionaryController {
     private DictionaryService dictionaryService;
@@ -39,22 +40,29 @@ public class DictionaryController {
         return this.dictionaryService.postPicture(pictureFile);
     }
 
-    @CrossOrigin
     @PostMapping("/word")
     public ResponseEntity<Object> postWord(@RequestBody WordDTO wordDTO) {
         return this.dictionaryService.postWord(wordDTO);
     }
 
-    @CrossOrigin
     @PutMapping("/word/{word}")
     public ResponseEntity<Object> postWordByWord(@PathVariable String word, @RequestBody WordDTO wordDTO) {
         return this.dictionaryService.putWordByWord(word, wordDTO);
     }
 
-    @CrossOrigin
     @DeleteMapping("/word/{word}")
     public ResponseEntity<Object> deleteWordByWord(@PathVariable String word) {
         return this.dictionaryService.deleteWordByWord(word);
+    }
+
+    @DeleteMapping("/video/{name}")
+    public ResponseEntity<Object> deleteVideoByName(@PathVariable String name) {
+        return this.dictionaryService.deleteVideoByName(name);
+    }
+
+    @DeleteMapping("/picture/{name}")
+    public ResponseEntity<Object> deletePictureByName(@PathVariable String name) {
+        return this.dictionaryService.deletePictureByName(name);
     }
 
     @PostMapping("/dictionary")

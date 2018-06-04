@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class GatewayController {
     private UsersService usersService;
@@ -34,7 +35,7 @@ public class GatewayController {
 
 //    Users
 
-    @PostMapping("/user")
+    @PostMapping("/register")
     public Object postRegister(@RequestBody RegisterDTO registerDTO) {
         return this.usersService.postRegister(registerDTO);
     }
@@ -136,6 +137,16 @@ public class GatewayController {
     @DeleteMapping("/word/{word}")
     public Object deleteWordByWord(@PathVariable String word) {
         return this.dictionaryService.deleteWordByWord(word);
+    }
+
+    @DeleteMapping("/video/{name}")
+    public Object deleteVideoByName(@PathVariable String name) {
+        return this.dictionaryService.deleteVideoByName(name);
+    }
+
+    @DeleteMapping("/picture/{name}")
+    public Object deletePictureByName(@PathVariable String name) {
+        return this.dictionaryService.deletePictureByName(name);
     }
 
     @PostMapping("/dictionary")

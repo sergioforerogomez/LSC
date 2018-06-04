@@ -109,6 +109,22 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
+    public Object deleteVideoByName(String name) {
+        String url = this.url + "/video/{name}";
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", name);
+        return this.restTemplate.exchange(url, HttpMethod.DELETE, null, Object.class, params).getBody();
+    }
+
+    @Override
+    public Object deletePictureByName(String name) {
+        String url = this.url + "/picture/{name}";
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", name);
+        return this.restTemplate.exchange(url, HttpMethod.DELETE, null, Object.class, params).getBody();
+    }
+
+    @Override
     public Object postDictionary(List<WordDTO> wordDTOS) {
         String url = this.url + "/dictionary";
         return this.restTemplate.postForObject(url, wordDTOS, Object.class);

@@ -21,8 +21,8 @@ public class UsersServiceImpl implements UsersService {
     private AchievementRepository achievementRepository;
     private ModelMapper modelMapper = new ModelMapper();
 
-    private boolean validatePasswordAndConfirmPassword(String password, String confirmPassword) {
-        return password.equals(confirmPassword);
+    private boolean validateTwoPasswords(String password1, String password2) {
+        return password1.equals(password2);
     }
 
     private boolean validatePassword(String password) {
@@ -30,13 +30,13 @@ public class UsersServiceImpl implements UsersService {
         return pattern.matcher(password).matches();
     }
 
-    private ResponseEntity<Object> validaRegisterPassword(RegisterDTO registerDTO) {
+    private ResponseEntity<Object> validateRegisterPassword(RegisterDTO registerDTO) {
         if (validatePassword(registerDTO.getPassword())) {
-            if (validatePasswordAndConfirmPassword(registerDTO.getPassword(), registerDTO.getConfirmPassword())) {
+            if (validateTwoPasswords(registerDTO.getPassword(), registerDTO.getConfirmPassword())) {
                 ProfileEntity profileEntity = this.modelMapper.map(registerDTO, ProfileEntity.class);
+                profileEntity.setLevel(Level.BASICO);
                 profileEntity.setGeneralProgress(0);
-                profileEntity.setProgressName("Básico");
-                this.profileRepository.save(this.modelMapper.map(registerDTO, ProfileEntity.class));
+                this.profileRepository.save(profileEntity);
                 return postLogin(new LoginInputDTO(registerDTO.getEmail(), registerDTO.getPassword()));
             }
             return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, las contraseñas no coinciden."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
@@ -48,7 +48,7 @@ public class UsersServiceImpl implements UsersService {
         Pattern pattern = Pattern.compile("^(.+)@(.+)$");
         if (pattern.matcher(registerDTO.getEmail()).matches()) {
             if (this.profileRepository.findByEmail(registerDTO.getEmail()) == null) {
-                return validaRegisterPassword(registerDTO);
+                return validateRegisterPassword(registerDTO);
             }
             return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, el correo ya existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
         }
@@ -88,16 +88,9 @@ public class UsersServiceImpl implements UsersService {
     public ResponseEntity<Object> getProfileById(String profileId) {
         if (isProfile(profileId)) {
             ProfileEntity profileEntity = this.profileRepository.findById(profileId).get();
-            return new ResponseEntity<>(this.modelMapper.map(profileEntity, ProfileOutputDTO.class), new HttpHeaders(), HttpStatus.OK);
+            return new ResponseEntity<>(this.modelMapper.map(profileEntity, ProfileOutputDTO.class).setLevel(profileEntity.getLevel().getLevel()), new HttpHeaders(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new ErrorDTO("Error al ver el perfil, el perfil no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
-
-    private ProfileEntity updateProfileImage(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
-        if (profileInputDTO.getProfileImage() != null) {
-            profileEntity.setProfileImage(profileInputDTO.getProfileImage());
-        }
-        return updateName(profileEntity, profileInputDTO);
     }
 
     private ProfileEntity updateName(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
@@ -110,7 +103,7 @@ public class UsersServiceImpl implements UsersService {
     private ProfileEntity updatePassword(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
         if (profileInputDTO.getPassword() != null && profileInputDTO.getConfirmPassword() != null && profileInputDTO.getCurrentPassword() != null) {
             if (validatePassword(profileInputDTO.getPassword())) {
-                if (validatePasswordAndConfirmPassword(profileInputDTO.getPassword(), profileInputDTO.getConfirmPassword())) {
+                if (validateTwoPasswords(profileInputDTO.getPassword(), profileInputDTO.getConfirmPassword())) {
                     profileEntity.setPassword(profileInputDTO.getPassword());
                 }
             }
@@ -129,20 +122,20 @@ public class UsersServiceImpl implements UsersService {
     public ResponseEntity<Object> putProfileById(String profileId, ProfileInputDTO profileInputDTO) {
         if (isProfile(profileId)) {
             ProfileEntity profileEntity = this.profileRepository.findById(profileId).get();
-            profileEntity = updateProfileImage(profileEntity, profileInputDTO);
+            profileEntity = updateName(profileEntity, profileInputDTO);
             this.profileRepository.save(profileEntity);
-            return new ResponseEntity<>(this.modelMapper.map(profileEntity, ProfileOutputDTO.class), new HttpHeaders(), HttpStatus.OK);
+            return new ResponseEntity<>(this.modelMapper.map(profileEntity, ProfileOutputDTO.class).setLevel(profileEntity.getLevel().getLevel()), new HttpHeaders(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new ErrorDTO("Error al editar el perfil, el perfil no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
-    private boolean validateAchievementId(String achievementId) {
+    private boolean isAchievement(String achievementId) {
         return this.achievementRepository.findById(achievementId).isPresent();
     }
 
     @Override
     public ResponseEntity<Object> getAchievementById(String achievementId) {
-        if (validateAchievementId(achievementId)) {
+        if (isAchievement(achievementId)) {
             AchievementEntity achievementEntity = this.achievementRepository.findById(achievementId).get();
             return new ResponseEntity<>(this.modelMapper.map(achievementEntity, AchievementDTO.class), new HttpHeaders(), HttpStatus.OK);
         }

@@ -20,5 +20,9 @@ public interface DictionaryService {
 
     Object deleteWordByWord(String word);
 
+    Object deleteVideoByName(String name);
+
+    Object deletePictureByName(String name);
+
     Object postDictionary(List<WordDTO> wordDTOS);
 }

@@ -61,13 +61,11 @@ public class AmazonClient {
         return fileUrl;
     }
 
-    public boolean deleteFile(String bucket, String fileName) {
+    public void deleteFile(String bucket, String fileName) {
         try {
             this.amazonS3.deleteObject(this.bucketName, bucket + "/" + fileName);
-            return true;
         } catch (AmazonServiceException e) {
             e.printStackTrace();
-            return false;
         }
     }
 }
