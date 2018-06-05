@@ -42,12 +42,6 @@ pipeline {
                     catch(error) {
 						echo "No java processes found in 172.31.95.218"
 					}
-      		        try {
-						sh 'ssh ubuntu@ip-172-31-93-85.ec2.internal killall mongod'
-                    }
-                    catch(error) {
-						echo "No mongo processes found in 172-31-93-85"
-      	            }
 					try {
 						sh 'ssh ubuntu@172.31.95.218 killall mongod'
                     }
@@ -57,12 +51,12 @@ pipeline {
                 }
 				
 				// Gateway
-				sh 'scp -r LSC/LSC/gateway LSC/LSC/users ubuntu@ip-172-31-93-85.ec2.internal:/home/ubuntu/LSC/LSC/'
+				sh 'scp -r LSC/LSC/gateway ubuntu@ip-172-31-93-85.ec2.internal:/home/ubuntu/LSC/LSC/'
 				sh 'scp -r LSC/gatewaystart.sh ubuntu@ip-172-31-93-85.ec2.internal:/home/ubuntu/'
 				sh 'ssh ubuntu@ip-172-31-93-85.ec2.internal sh gatewaystart.sh'
 
 				// LSC server
-				sh 'scp -r LSC/LSC/common LSC/LSC/dictionary ubuntu@172.31.95.218:/home/ubuntu/LSC/LSC/'
+				sh 'scp -r LSC/LSC/users LSC/LSC/common LSC/LSC/dictionary ubuntu@172.31.95.218:/home/ubuntu/LSC/LSC/'
 				sh 'scp -r LSC/javastart.sh ubuntu@172.31.95.218:/home/ubuntu/'
 				sh 'ssh ubuntu@172.31.95.218 sh javastart.sh'
 			}
