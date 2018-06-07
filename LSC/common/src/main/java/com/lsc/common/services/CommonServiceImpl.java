@@ -61,7 +61,7 @@ public class CommonServiceImpl implements CommonService {
             }
             return new ResponseEntity<>(this.modelMapper.map(lessonEntities, LessonDTO[].class), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al ver las lecciones, el nivel no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al ver las lecciones, el nivel no existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
     private boolean isLesson(String lessonId) {
@@ -75,7 +75,7 @@ public class CommonServiceImpl implements CommonService {
             List<PracticeDTO> practiceDTOS = Utils.getPracticesByLessonName(lessonEntity.getName(), wordDTOS);
             return new ResponseEntity<>(this.modelMapper.map(practiceDTOS, PracticeDTO[].class), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al ver la practica, la lección no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al ver la practica, la lección no existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
     private ResponseEntity<Object> checkImage(CNTKResponseDTO cntkResponseDTO, String tag) {
@@ -83,7 +83,7 @@ public class CommonServiceImpl implements CommonService {
             double probability = cntkResponseDTO.getPredictions().stream().filter(item -> item.getTagName().equals(tag)).findFirst().get().getProbability() * 100;
             return new ResponseEntity<>(this.modelMapper.map(new CNTKOutputDTO(cntkResponseDTO.getPredictions().get(0).getTagName().equals(tag), probability), CNTKOutputDTO.class), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al analizar la palabra, la palabra no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al analizar la palabra, la palabra no existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
     private boolean getCNTKAbecedaryUrl(String tag) {
@@ -125,7 +125,7 @@ public class CommonServiceImpl implements CommonService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al reconocer la palabra."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al reconocer la palabra."), new HttpHeaders(), HttpStatus.OK);
     }
 
     @Override

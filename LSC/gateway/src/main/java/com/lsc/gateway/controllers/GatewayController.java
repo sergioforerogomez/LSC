@@ -35,7 +35,7 @@ public class GatewayController {
 
 //    Users
 
-    @PostMapping("/register")
+    @PostMapping("/user")
     public Object postRegister(@RequestBody RegisterDTO registerDTO) {
         return this.usersService.postRegister(registerDTO);
     }

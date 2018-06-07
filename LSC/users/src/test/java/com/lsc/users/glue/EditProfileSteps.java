@@ -33,9 +33,6 @@ public class EditProfileSteps {
         this.requestSpecification = given().contentType("application/json");
         this.profileInputDTO = new ProfileInputDTO();
         switch (attribute) {
-            case "profileImage":
-                this.profileInputDTO.setProfileImage(UUID.randomUUID().toString().substring(0, 8));
-                break;
             case "name":
                 this.profileInputDTO.setName(UUID.randomUUID().toString().substring(0, 8));
                 break;

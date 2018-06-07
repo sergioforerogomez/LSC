@@ -50,7 +50,7 @@ public class DictionaryServiceImpl implements DictionaryService {
         if (wordEntity != null) {
             return new ResponseEntity<>(this.modelMapper.map(wordEntity, WordDTO.class), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al ver la palabra, la palabra no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al ver la palabra, la palabra no existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class DictionaryServiceImpl implements DictionaryService {
             this.wordRepository.save(wordEntity);
             return new ResponseEntity<>(this.modelMapper.map(wordEntity, WordDTO.class), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al crear la palabra, la palabra ya existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al crear la palabra, la palabra ya existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
     private WordEntity updatePicture(WordEntity wordEntity, WordDTO wordDTO) {
@@ -121,7 +121,7 @@ public class DictionaryServiceImpl implements DictionaryService {
             this.wordRepository.save(wordEntity);
             return new ResponseEntity<>(this.modelMapper.map(wordEntity, WordDTO.class), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al actualizar la palabra, la palabra no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al actualizar la palabra, la palabra no existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class DictionaryServiceImpl implements DictionaryService {
             this.wordRepository.delete(wordEntity);
             return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al eliminar la palabra, la palabra no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al eliminar la palabra, la palabra no existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
     @Override

@@ -1,30 +1,36 @@
 [
 	{
+		"achievementId": "a deletrear",
 		"title": "¡A deletrear!",
 		"description": "Practica todas las señas del abecedario.",
 		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/a+deletrear.png"
 	},
 	{
+		"achievementId": "llegaste lejos",
 		"title": "¡Llegaste lejos!",
 		"description": "Completa todos los niveles.",
 		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/llegaste+lejos.png"
 	},
 	{
+		"achievementId": "conteo",
 		"title": "Conteo",
 		"description": "Termina la lección de números.",
 		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/conteo.png"
 	},
 	{
+		"achievementId": "desbloqueador",
 		"title": "Desbloqueador",
 		"description": "Todos los niveles están desbloqueados.",
 		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/desbloqueador.png"
 	},
 	{
+		"achievementId": "estrategico",
 		"title": "Estratégico",
 		"description": "Completa el nivel de verbos.",
 		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/estrategico.png"
 	},
 	{
+		"achievementId": "leccion realizada",
 		"title": "Lección realizada",
 		"description": "Realiza tu primera lección.",
 		"image": "https://s3.amazonaws.com/lsc-resources/imagenes/app/leccion+realizada.png"

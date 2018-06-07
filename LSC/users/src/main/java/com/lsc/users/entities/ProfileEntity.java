@@ -21,17 +21,26 @@ public class ProfileEntity {
     private List<String> reachedAchievements;
     private List<String> completedLessons;
 
+    ProfileEntity() {
+        this.reachedAchievements = new ArrayList<>();
+        this.completedLessons = new ArrayList<>();
+    }
+
     public void addReachedAchievement(String reachedAchievement) {
         if (this.reachedAchievements == null) {
             this.reachedAchievements = new ArrayList<>();
         }
-        this.reachedAchievements.add(reachedAchievement);
+        if (reachedAchievements.stream().noneMatch((item) -> item.equals(reachedAchievement))) {
+            this.reachedAchievements.add(reachedAchievement);
+        }
     }
 
     public void addCompletedLesson(String completedLesson) {
         if (this.completedLessons == null) {
             this.completedLessons = new ArrayList<>();
         }
-        this.completedLessons.add(completedLesson);
+        if (completedLessons.stream().noneMatch((item) -> item.equals(completedLesson))) {
+            this.completedLessons.add(completedLesson);
+        }
     }
 }

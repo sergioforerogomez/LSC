@@ -5,6 +5,7 @@ import com.lsc.users.entities.AchievementEntity;
 import com.lsc.users.entities.ProfileEntity;
 import com.lsc.users.repositories.AchievementRepository;
 import com.lsc.users.repositories.ProfileRepository;
+import com.lsc.users.utils.AchievementsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -39,9 +40,9 @@ public class UsersServiceImpl implements UsersService {
                 this.profileRepository.save(profileEntity);
                 return postLogin(new LoginInputDTO(registerDTO.getEmail(), registerDTO.getPassword()));
             }
-            return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, las contraseñas no coinciden."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, las contraseñas no coinciden."), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, la contraseña es invalida."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, la contraseña es invalida."), new HttpHeaders(), HttpStatus.OK);
     }
 
     private ResponseEntity<Object> validateRegisterEmail(RegisterDTO registerDTO) {
@@ -50,9 +51,9 @@ public class UsersServiceImpl implements UsersService {
             if (this.profileRepository.findByEmail(registerDTO.getEmail()) == null) {
                 return validateRegisterPassword(registerDTO);
             }
-            return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, el correo ya existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, el correo ya existe."), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, el correo es invalido."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, el correo es invalido."), new HttpHeaders(), HttpStatus.OK);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class UsersServiceImpl implements UsersService {
         if (loginInputDTO.getPassword().equals(profileEntity.getPassword())) {
             return new ResponseEntity<>(this.modelMapper.map(profileEntity, LoginOutputDTO.class), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al iniciar sesion, el correo y la contraseña no coinciden."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al iniciar sesion, el correo y la contraseña no coinciden."), new HttpHeaders(), HttpStatus.OK);
     }
 
     private ResponseEntity<Object> validateLoginEmail(LoginInputDTO loginInputDTO) {
@@ -72,7 +73,7 @@ public class UsersServiceImpl implements UsersService {
         if (profileEntity != null) {
             return validateLoginPassword(loginInputDTO, profileEntity);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al iniciar sesion, el correo no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al iniciar sesion, el correo no existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class UsersServiceImpl implements UsersService {
             ProfileEntity profileEntity = this.profileRepository.findById(profileId).get();
             return new ResponseEntity<>(this.modelMapper.map(profileEntity, ProfileOutputDTO.class).setLevel(profileEntity.getLevel().getLevel()), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al ver el perfil, el perfil no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al ver el perfil, el perfil no existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
     private ProfileEntity updateName(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
@@ -112,8 +113,9 @@ public class UsersServiceImpl implements UsersService {
     }
 
     private ProfileEntity updateCompletedLessons(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
-        if (profileInputDTO.getCompletedLessons() != null) {
-            profileEntity.addCompletedLesson(profileInputDTO.getCompletedLessons());
+        if (profileInputDTO.getCompletedLesson() != null) {
+            profileEntity.addCompletedLesson(profileInputDTO.getCompletedLesson());
+            AchievementsService.updateAchievementsByCompletedLesson(profileEntity, profileInputDTO.getCompletedLesson());
         }
         return profileEntity;
     }
@@ -126,7 +128,7 @@ public class UsersServiceImpl implements UsersService {
             this.profileRepository.save(profileEntity);
             return new ResponseEntity<>(this.modelMapper.map(profileEntity, ProfileOutputDTO.class).setLevel(profileEntity.getLevel().getLevel()), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al editar el perfil, el perfil no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al editar el perfil, el perfil no existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
     private boolean isAchievement(String achievementId) {
@@ -139,7 +141,7 @@ public class UsersServiceImpl implements UsersService {
             AchievementEntity achievementEntity = this.achievementRepository.findById(achievementId).get();
             return new ResponseEntity<>(this.modelMapper.map(achievementEntity, AchievementDTO.class), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al ver el logro, el logro no existe."), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO("Error al ver el logro, el logro no existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
     @Override

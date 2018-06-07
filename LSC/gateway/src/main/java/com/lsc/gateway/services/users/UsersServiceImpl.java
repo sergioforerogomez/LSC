@@ -22,9 +22,9 @@ public class UsersServiceImpl implements UsersService {
     private String url;
 
     @Override
-    public Object postRegister(RegisterDTO registerInputDTO) {
+    public Object postRegister(RegisterDTO registerDTO) {
         String url = this.url + "/user";
-        return this.restTemplate.postForObject(url, registerInputDTO, Object.class);
+        return this.restTemplate.postForObject(url, registerDTO, Object.class);
     }
 
     @Override
