@@ -51,6 +51,11 @@ public class UsersController {
         return this.usersService.getAchievements();
     }
 
+    @PostMapping("/user/profile")
+    public ResponseEntity<Object> postUserProfile(@RequestBody List<ProfileInputDTO> profileInputDTOS) {
+        return this.usersService.postUserProfile(profileInputDTOS);
+    }
+
     @PostMapping("/user/achievement")
     public ResponseEntity<Object> postUserAchievement(@RequestBody List<AchievementDTO> achievementDTOS) {
         return this.usersService.postUserAchievement(achievementDTOS);

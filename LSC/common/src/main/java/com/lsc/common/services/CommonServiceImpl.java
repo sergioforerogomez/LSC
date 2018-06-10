@@ -7,7 +7,7 @@ import com.lsc.common.entities.LessonEntity;
 import com.lsc.common.entities.LevelEntity;
 import com.lsc.common.repositories.LessonRepository;
 import com.lsc.common.repositories.LevelRepository;
-import com.lsc.common.utils.Utils;
+import com.lsc.common.utils.PracticesService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,7 +72,7 @@ public class CommonServiceImpl implements CommonService {
     public ResponseEntity<Object> postPracticeByLessonId(String lessonId, List<WordDTO> wordDTOS) {
         if (isLesson(lessonId)) {
             LessonEntity lessonEntity = this.lessonRepository.findById(lessonId).get();
-            List<PracticeDTO> practiceDTOS = Utils.getPracticesByLessonName(lessonEntity.getName(), wordDTOS);
+            List<PracticeDTO> practiceDTOS = PracticesService.getPracticesByLessonName(lessonEntity.getName(), wordDTOS);
             return new ResponseEntity<>(this.modelMapper.map(practiceDTOS, PracticeDTO[].class), new HttpHeaders(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new ErrorDTO("Error al ver la practica, la lección no existe."), new HttpHeaders(), HttpStatus.OK);

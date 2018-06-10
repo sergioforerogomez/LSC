@@ -35,6 +35,15 @@ public class ProfileEntity {
         }
     }
 
+    private void updateProgress() {
+        this.generalProgress = this.completedLessons.size() * 100 / 8;
+        if (this.generalProgress > 66) {
+            this.level = Level.AVANZADO;
+        } else if (this.generalProgress > 33) {
+            this.level = Level.INTERMEDIO;
+        }
+    }
+
     public void addCompletedLesson(String completedLesson) {
         if (this.completedLessons == null) {
             this.completedLessons = new ArrayList<>();
@@ -42,5 +51,6 @@ public class ProfileEntity {
         if (completedLessons.stream().noneMatch((item) -> item.equals(completedLesson))) {
             this.completedLessons.add(completedLesson);
         }
+        updateProgress();
     }
 }

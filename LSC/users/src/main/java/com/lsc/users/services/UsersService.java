@@ -21,5 +21,7 @@ public interface UsersService {
 
     ResponseEntity<Object> getAchievements();
 
+    ResponseEntity<Object> postUserProfile(List<ProfileInputDTO> profileInputDTOS);
+
     ResponseEntity<Object> postUserAchievement(List<AchievementDTO> achievementDTOS);
 }

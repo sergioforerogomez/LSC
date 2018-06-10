@@ -42,12 +42,16 @@ public class UsersServiceImpl implements UsersService {
             }
             return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, las contraseñas no coinciden."), new HttpHeaders(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, la contraseña es invalida."), new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(new ErrorDTO("Error al crear la cuenta, la contraseña debe contener al menos una letra mayúscula, un número y 8 caracteres."), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    private boolean validateEmail(String email) {
+        Pattern pattern = Pattern.compile("^(.+)@(.+)$");
+        return pattern.matcher(email).matches();
     }
 
     private ResponseEntity<Object> validateRegisterEmail(RegisterDTO registerDTO) {
-        Pattern pattern = Pattern.compile("^(.+)@(.+)$");
-        if (pattern.matcher(registerDTO.getEmail()).matches()) {
+        if (validateEmail(registerDTO.getEmail())) {
             if (this.profileRepository.findByEmail(registerDTO.getEmail()) == null) {
                 return validateRegisterPassword(registerDTO);
             }
@@ -94,37 +98,75 @@ public class UsersServiceImpl implements UsersService {
         return new ResponseEntity<>(new ErrorDTO("Error al ver el perfil, el perfil no existe."), new HttpHeaders(), HttpStatus.OK);
     }
 
-    private ProfileEntity updateName(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
+    private ResponseEntity<Object> canUpdateEmail(ProfileInputDTO profileInputDTO) {
+        if (profileInputDTO.getEmail() != null) {
+            if (!validateEmail(profileInputDTO.getEmail())) {
+                return new ResponseEntity<>(new ErrorDTO("Error al editar el perfil, el correo es invalido."), new HttpHeaders(), HttpStatus.OK);
+            }
+            if (this.profileRepository.findByEmail(profileInputDTO.getEmail()) != null) {
+                return new ResponseEntity<>(new ErrorDTO("Error al editar el perfil, el correo ya existe."), new HttpHeaders(), HttpStatus.OK);
+            }
+        }
+        return null;
+    }
+
+    private ResponseEntity<Object> canUpdatePassword(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
+        if (profileInputDTO.getPassword() != null) {
+            if (!validateTwoPasswords(profileEntity.getPassword(), profileInputDTO.getCurrentPassword())) {
+                return new ResponseEntity<>(new ErrorDTO("Error al editar el perfil, la contraseña actual no coincide."), new HttpHeaders(), HttpStatus.OK);
+            }
+            if (!validatePassword(profileInputDTO.getPassword())) {
+                return new ResponseEntity<>(new ErrorDTO("Error al editar el perfil, la contraseña debe contener al menos una letra mayúscula, un número y 8 caracteres."), new HttpHeaders(), HttpStatus.OK);
+            }
+            if (!validateTwoPasswords(profileInputDTO.getPassword(), profileInputDTO.getConfirmPassword())) {
+                return new ResponseEntity<>(new ErrorDTO("Error al editar el perfil, las contraseñas no coinciden."), new HttpHeaders(), HttpStatus.OK);
+            }
+        }
+        return null;
+    }
+
+    private void updateEmail(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
+        if (profileInputDTO.getEmail() != null) {
+            profileEntity.setEmail(profileInputDTO.getEmail());
+        }
+        updatePassword(profileEntity, profileInputDTO);
+    }
+
+    private void updatePassword(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
+        if (profileInputDTO.getPassword() != null && profileInputDTO.getConfirmPassword() != null && profileInputDTO.getCurrentPassword() != null) {
+            profileEntity.setPassword(profileInputDTO.getPassword());
+        }
+        updateName(profileEntity, profileInputDTO);
+    }
+
+    private void updateName(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
         if (profileInputDTO.getName() != null) {
             profileEntity.setName(profileInputDTO.getName());
         }
-        return updatePassword(profileEntity, profileInputDTO);
+        updateCompletedLessons(profileEntity, profileInputDTO);
     }
 
-    private ProfileEntity updatePassword(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
-        if (profileInputDTO.getPassword() != null && profileInputDTO.getConfirmPassword() != null && profileInputDTO.getCurrentPassword() != null) {
-            if (validatePassword(profileInputDTO.getPassword())) {
-                if (validateTwoPasswords(profileInputDTO.getPassword(), profileInputDTO.getConfirmPassword())) {
-                    profileEntity.setPassword(profileInputDTO.getPassword());
-                }
-            }
-        }
-        return updateCompletedLessons(profileEntity, profileInputDTO);
-    }
-
-    private ProfileEntity updateCompletedLessons(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
+    private void updateCompletedLessons(ProfileEntity profileEntity, ProfileInputDTO profileInputDTO) {
         if (profileInputDTO.getCompletedLesson() != null) {
-            profileEntity.addCompletedLesson(profileInputDTO.getCompletedLesson());
             AchievementsService.updateAchievementsByCompletedLesson(profileEntity, profileInputDTO.getCompletedLesson());
+            profileEntity.addCompletedLesson(profileInputDTO.getCompletedLesson());
         }
-        return profileEntity;
     }
 
     @Override
     public ResponseEntity<Object> putProfileById(String profileId, ProfileInputDTO profileInputDTO) {
+        ResponseEntity<Object> responseEntity;
         if (isProfile(profileId)) {
             ProfileEntity profileEntity = this.profileRepository.findById(profileId).get();
-            profileEntity = updateName(profileEntity, profileInputDTO);
+            responseEntity = canUpdateEmail(profileInputDTO);
+            if (responseEntity != null) {
+                return responseEntity;
+            }
+            responseEntity = canUpdatePassword(profileEntity, profileInputDTO);
+            if (responseEntity != null) {
+                return responseEntity;
+            }
+            updateEmail(profileEntity, profileInputDTO);
             this.profileRepository.save(profileEntity);
             return new ResponseEntity<>(this.modelMapper.map(profileEntity, ProfileOutputDTO.class).setLevel(profileEntity.getLevel().getLevel()), new HttpHeaders(), HttpStatus.OK);
         }
@@ -147,6 +189,15 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public ResponseEntity<Object> getAchievements() {
         return new ResponseEntity<>(this.modelMapper.map(this.achievementRepository.findAll(), AchievementDTO[].class), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> postUserProfile(List<ProfileInputDTO> profileInputDTOS) {
+        this.profileRepository.deleteAll();
+        for (ProfileInputDTO profileInputDTO : profileInputDTOS) {
+            this.profileRepository.save(this.modelMapper.map(profileInputDTO, ProfileEntity.class));
+        }
+        return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.OK);
     }
 
     @Override

@@ -15,12 +15,14 @@ public class AchievementsService {
         achievementsMap.put("numeros", "conteo");
         achievementsMap.put("lugares", "desbloqueador");
         achievementsMap.put("en el estudio", "estrategico");
-        achievementsMap.put("pronombres", "leccion realizada");
     }
 
     public static void updateAchievementsByCompletedLesson(ProfileEntity profileEntity, String completedLesson) {
         if (achievementsMap == null) {
             fillAchievementsMap();
+        }
+        if (profileEntity.getCompletedLessons().size() == 0) {
+            profileEntity.addReachedAchievement("leccion realizada");
         }
         if (achievementsMap.containsKey(completedLesson)) {
             profileEntity.addReachedAchievement(achievementsMap.get(completedLesson));

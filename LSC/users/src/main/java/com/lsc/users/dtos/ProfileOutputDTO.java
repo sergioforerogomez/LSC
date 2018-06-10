@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ProfileOutputDTO {
     private String profileId;
+    private String email;
     private String name;
     private String level;
     private int generalProgress;

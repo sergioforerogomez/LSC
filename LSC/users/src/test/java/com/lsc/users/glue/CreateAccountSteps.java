@@ -22,12 +22,12 @@ public class CreateAccountSteps {
     @Dado("^que Sergio quiere crear una cuenta con datos validos$")
     public void queSergioQuiereCrearUnaCuentaConDatosValidos() {
         this.requestSpecification = given().contentType("application/json");
-        this.registerDTO = new RegisterDTO("random-" + UUID.randomUUID().toString().substring(0, 8) + "@example.com", "abcdefg0", "abcdefg0");
+        this.registerDTO = new RegisterDTO("random-" + UUID.randomUUID().toString().substring(0, 8) + "@example.com", "abcdefg0", "abcdefg0", "Sergio");
     }
 
     @Dado("^que Sergio quiere crear una cuenta con datos existentes$")
     public void queSergioQuiereCrearUnaCuentaConDatosExistentes() {
-        this.registerDTO = new RegisterDTO("random-" + UUID.randomUUID().toString().substring(0, 8) + "@example.com", "abcdefg0", "abcdefg0");
+        this.registerDTO = new RegisterDTO("random-" + UUID.randomUUID().toString().substring(0, 8) + "@example.com", "abcdefg0", "abcdefg0", "Sergio");
         given().contentType("application/json").body(this.registerDTO).post(this.createAccountUrl);
         this.requestSpecification = given().contentType("application/json");
     }
@@ -35,7 +35,7 @@ public class CreateAccountSteps {
     @Dado("^que Sergio quiere crear una cuenta con \"([^\"]*)\", \"([^\"]*)\" y \"([^\"]*)\"$")
     public void queSergioQuiereCrearUnaCuentaConY(String email, String password, String confirmPassword) {
         this.requestSpecification = given().contentType("application/json");
-        this.registerDTO = new RegisterDTO(email, password, confirmPassword);
+        this.registerDTO = new RegisterDTO(email, password, confirmPassword, "Sergio");
     }
 
     @Cuando("^realiza una peticion para crear la cuenta$")

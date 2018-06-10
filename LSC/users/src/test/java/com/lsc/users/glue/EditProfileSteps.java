@@ -22,7 +22,7 @@ public class EditProfileSteps {
     private ProfileInputDTO profileInputDTO;
 
     private String getProfileId() {
-        RegisterDTO registerDTO = new RegisterDTO(UUID.randomUUID().toString().substring(0, 8) + "@example.com", "abcdefg0", "abcdefg0");
+        RegisterDTO registerDTO = new RegisterDTO(UUID.randomUUID().toString().substring(0, 8) + "@example.com", "abcdefg0", "abcdefg0", "Sergio");
         String profileId = given().contentType("application/json").body(registerDTO).post(this.createAccountUrl).then().extract().response().getBody().jsonPath().get("profileId");
         return profileId;
     }

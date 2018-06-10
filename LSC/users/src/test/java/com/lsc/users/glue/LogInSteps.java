@@ -27,7 +27,7 @@ public class LogInSteps {
     @Dado("^que Sergio quiere iniciar sesion con datos existentes")
     public void queSergioQuiereIniciarSesionConDatosValidos() {
         String email = "random-" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
-        RegisterDTO registerDTO = new RegisterDTO(email, "abcdefg0", "abcdefg0");
+        RegisterDTO registerDTO = new RegisterDTO(email, "abcdefg0", "abcdefg0", "Sergio");
         given().contentType("application/json").body(registerDTO).post(this.createAccountUrl);
         this.requestSpecification = given().contentType("application/json");
         this.loginInputDTO = new LoginInputDTO(email, "abcdefg0");

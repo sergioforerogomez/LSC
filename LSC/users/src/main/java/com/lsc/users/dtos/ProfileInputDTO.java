@@ -10,9 +10,10 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProfileInputDTO {
-    private String name;
+    private String email;
     private String password;
     private String confirmPassword;
     private String currentPassword;
+    private String name;
     private String completedLesson;
 }

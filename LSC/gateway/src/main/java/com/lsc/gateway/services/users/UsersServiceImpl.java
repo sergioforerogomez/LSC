@@ -65,6 +65,12 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public Object postUserProfile(List<ProfileInputDTO> profileInputDTOS) {
+        String url = this.url + "/user/profile";
+        return this.restTemplate.postForObject(url, profileInputDTOS, Object.class);
+    }
+
+    @Override
     public Object postUserAchievement(List<AchievementDTO> achievementDTOS) {
         String url = this.url + "/user/achievement";
         return this.restTemplate.postForObject(url, achievementDTOS, Object.class);

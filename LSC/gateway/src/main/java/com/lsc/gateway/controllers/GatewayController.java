@@ -65,6 +65,11 @@ public class GatewayController {
         return this.usersService.getAchievements();
     }
 
+    @PostMapping("/user/profile")
+    public Object postUserAProfile(@RequestBody List<ProfileInputDTO> profileInputDTOS) {
+        return this.usersService.postUserProfile(profileInputDTOS);
+    }
+
     @PostMapping("/user/achievement")
     public Object postUserAchievement(@RequestBody List<AchievementDTO> achievementDTOS) {
         return this.usersService.postUserAchievement(achievementDTOS);

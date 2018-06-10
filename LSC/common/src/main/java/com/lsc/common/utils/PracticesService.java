@@ -173,6 +173,13 @@ public class PracticesService {
         return lessonName.equals("Abecedario") || lessonName.equals("Números") ? practicesMap.get("take-sign") : practicesMap.get(practicesMapKeySet.get(new Random().nextInt(practicesMapKeySet.size())));
     }
 
+    private static void addWord(List<WordDTO> practicesWords, WordDTO wordDTO) {
+        String word = wordDTO.getWord();
+        if (!word.equals("G") && !word.equals("H") && !word.equals("J") && !word.equals("Ñ") && !word.equals("S") && !word.equals("Z")) {
+            practicesWords.add(wordDTO);
+        }
+    }
+
     private static List<PracticeDTO> getRandomPractices(String lessonName, List<WordDTO> wordDTOS, String wordsSchema) {
         List<PracticeDTO> practiceDTOS = new ArrayList<>();
         Stack<WordDTO> showSignWords = new Stack<>();
@@ -181,7 +188,7 @@ public class PracticesService {
         while (!showSignWords.isEmpty() || !practicesWords.isEmpty()) {
             if (!showSignWords.isEmpty() && new Random().nextInt() % 2 == 0) {
                 WordDTO wordDTO = showSignWords.pop();
-                practicesWords.add(wordDTO);
+                addWord(practicesWords, wordDTO);
                 practiceDTOS.add(practicesMap.get("show-sign").get(lessonName, new ArrayList<>(wordDTOS), wordsSchema.split(" - "), wordDTO.getWord()));
             } else if (!practicesWords.isEmpty()) {
                 practiceDTOS.add(getRadomPractice(lessonName).get(lessonName, new ArrayList<>(wordDTOS), wordsSchema.split(" - "), practicesWords.remove(0).getWord()));

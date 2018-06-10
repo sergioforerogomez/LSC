@@ -20,5 +20,7 @@ public interface UsersService {
 
     Object getAchievements();
 
+    Object postUserProfile(List<ProfileInputDTO> profileInputDTOS);
+
     Object postUserAchievement(List<AchievementDTO> achievementDTOS);
 }
