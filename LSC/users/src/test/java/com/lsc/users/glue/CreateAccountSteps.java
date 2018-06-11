@@ -1,18 +1,12 @@
 package com.lsc.users.glue;
 
+import com.lsc.users.Utils.Utils;
 import com.lsc.users.dtos.RegisterDTO;
 import cucumber.api.java.es.Cuando;
 import cucumber.api.java.es.Dado;
-import cucumber.api.java.es.Entonces;
-import cucumber.api.java.es.Y;
 import io.restassured.specification.RequestSpecification;
 
-import java.util.UUID;
-
 import static net.serenitybdd.rest.SerenityRest.given;
-import static net.serenitybdd.rest.SerenityRest.then;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 
 public class CreateAccountSteps {
     private String createAccountUrl = "http://localhost:12346/user";
@@ -22,20 +16,8 @@ public class CreateAccountSteps {
     @Dado("^que Sergio quiere crear una cuenta con datos validos$")
     public void queSergioQuiereCrearUnaCuentaConDatosValidos() {
         this.requestSpecification = given().contentType("application/json");
-        this.registerDTO = new RegisterDTO("random-" + UUID.randomUUID().toString().substring(0, 8) + "@example.com", "abcdefg0", "abcdefg0", "Sergio");
-    }
-
-    @Dado("^que Sergio quiere crear una cuenta con datos existentes$")
-    public void queSergioQuiereCrearUnaCuentaConDatosExistentes() {
-        this.registerDTO = new RegisterDTO("random-" + UUID.randomUUID().toString().substring(0, 8) + "@example.com", "abcdefg0", "abcdefg0", "Sergio");
-        given().contentType("application/json").body(this.registerDTO).post(this.createAccountUrl);
-        this.requestSpecification = given().contentType("application/json");
-    }
-
-    @Dado("^que Sergio quiere crear una cuenta con \"([^\"]*)\", \"([^\"]*)\" y \"([^\"]*)\"$")
-    public void queSergioQuiereCrearUnaCuentaConY(String email, String password, String confirmPassword) {
-        this.requestSpecification = given().contentType("application/json");
-        this.registerDTO = new RegisterDTO(email, password, confirmPassword, "Sergio");
+        String password = Utils.getRandomPassword();
+        this.registerDTO = new RegisterDTO(Utils.getRandomEmail(), password, password, Utils.getRandomName());
     }
 
     @Cuando("^realiza una peticion para crear la cuenta$")
@@ -44,15 +26,17 @@ public class CreateAccountSteps {
         this.requestSpecification.when().post(this.createAccountUrl);
     }
 
-    @Entonces("^el sistema retorna un token$")
-    public void elSistemaUnRetornaToken() {
-        String responseToken = then().extract().response().getBody().jsonPath().get("token");
-        assertThat(responseToken, is(nullValue()));
+    @Dado("^que Sergio quiere crear una cuenta con \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" y \"([^\"]*)\"$")
+    public void queSergioQuiereCrearUnaCuentaConY(String email, String password, String confirmPassword, String name) {
+        this.requestSpecification = given().contentType("application/json");
+        this.registerDTO = new RegisterDTO(email, password, confirmPassword, name);
     }
 
-    @Y("^el id del perfil$")
-    public void elIdDelPerfil() {
-        String responseProfileId = then().extract().response().getBody().jsonPath().get("profileId");
-        assertThat(responseProfileId, is(notNullValue()));
+    @Dado("^que Sergio quiere crear una cuenta con datos existentes$")
+    public void queSergioQuiereCrearUnaCuentaConDatosExistentes() {
+        String password = Utils.getRandomPassword();
+        this.registerDTO = new RegisterDTO(Utils.getRandomEmail(), password, password, Utils.getRandomName());
+        given().contentType("application/json").body(this.registerDTO).post(this.createAccountUrl);
+        this.requestSpecification = given().contentType("application/json");
     }
 }

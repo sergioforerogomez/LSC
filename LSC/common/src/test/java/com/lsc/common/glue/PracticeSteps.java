@@ -16,44 +16,45 @@ import static org.hamcrest.Matchers.notNullValue;
 
 public class PracticeSteps {
     private String viewLevelUrl = "http://localhost:12347/level";
-    private String viewPracticeUrl = "http://localhost:12347/practice";
+    private String viewLessonUrl = "http://localhost:12347/lesson";
     private RequestSpecification requestSpecification;
-
-    @Dado("^que Sergio quiere ver los datos de un nivel con un id invalido$")
-    public void queSergioQuiereVerLosDatosDeUnNivelConUnIdInvalido() {
-        this.viewLevelUrl += "/" + UUID.randomUUID().toString().substring(0, 8);
-        this.requestSpecification = given().contentType("application/json");
-    }
 
     @Dado("^que Sergio quiere ver los datos de todos los niveles$")
     public void queSergioQuiereVerLosDatosDeTodosLosNiveles() {
         this.requestSpecification = given().contentType("application/json");
     }
 
-    @Dado("^que Sergio quiere ver los datos de una practica con un id invalido$")
-    public void queSergioQuiereVerLosDatosDeUnaPracticaConUnIdInvalido() {
-        this.viewPracticeUrl += "/" + UUID.randomUUID().toString().substring(0, 8);
+    @Cuando("^realiza una perticion para ver niveles$")
+    public void realizaUnaPerticionParaVerNiveles() {
+        this.requestSpecification.when().get(this.viewLevelUrl);
+    }
+
+    @Entonces("^el sistema retorna una lista de niveles$")
+    public void elSistemaRetornaUnaListaDeNiveles() {
+        List<Object> response = then().extract().response().getBody().jsonPath().getList("");
+        assertThat(response, is(notNullValue()));
+    }
+
+    @Dado("^que Sergio quiere ver los datos de la leccion \"([^\"]*)\"$")
+    public void queSergioQuiereVerLosDatosDeLaLeccion(String lesson) {
+        this.viewLessonUrl += "/" + lesson;
         this.requestSpecification = given().contentType("application/json");
     }
 
-    @Cuando("^realiza una peticion para ver el nivel$")
-    public void realizaUnaPeticionParaVerElNivel() {
-        this.requestSpecification.when().get(this.viewLevelUrl);
+    @Cuando("^realiza una perticion para ver lecciones$")
+    public void realizaUnaPerticionParaVerLecciones() {
+        this.requestSpecification.when().get(this.viewLessonUrl);
     }
 
-    @Cuando("^realiza una peticion para ver los niveles$")
-    public void realizaUnaPeticionParaVerLosNiveles() {
-        this.requestSpecification.when().get(this.viewLevelUrl);
-    }
-
-    @Cuando("^realiza una peticion para solicitar la practica$")
-    public void realizaUnaPeticionParaSolicitarLaPractica() {
-        this.requestSpecification.when().get(this.viewPracticeUrl);
-    }
-
-    @Entonces("^el sistema retorna los niveles$")
-    public void elSistemaRetornaLosNiveles() {
-        List<String> response = then().extract().response().getBody().jsonPath().getList("");
+    @Entonces("^el sistema retorna una lista de lecciones")
+    public void elSistemaRetornaUnaListaDeLecciones() {
+        List<Object> response = then().extract().response().getBody().jsonPath().getList("");
         assertThat(response, is(notNullValue()));
+    }
+
+    @Dado("^que Sergio quiere ver los datos de una leccion con un id invalido$")
+    public void queSergioQuiereVerLosDatosDeUnaLeccionConUnIdInvalido() {
+        this.viewLessonUrl += "/" + UUID.randomUUID().toString().substring(0, 8);
+        this.requestSpecification = given().contentType("application/json");
     }
 }

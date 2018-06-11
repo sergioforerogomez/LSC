@@ -22,8 +22,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<serenity.version>1.8.3</serenity.version>
-		<serenity.maven.version>1.8.3</serenity.maven.version>
+		<serenity.version>1.9.0</serenity.version>
+		<serenity.maven.version>1.9.0</serenity.maven.version>
 		<serenity.cucumber.version>1.6.6</serenity.cucumber.version>
 		<encoding>UTF-8</encoding>
 		<serenity.test.root/>

@@ -129,6 +129,7 @@ public class PracticesService {
         practicesMap.put("discover-image", (lessonName, wordDTOS, wordsSchema, word) ->
                 {
                     List<String> content = new ArrayList<>(Collections.singletonList(word));
+                    wordDTOS.remove(wordDTOS.stream().filter((item) -> item.getWord().equals(word)).findFirst().get());
                     content.addAll(getRandomPictures(wordDTOS, lessonName, 5));
                     Collections.shuffle(content);
                     return new PracticeDTO().setCode("discover-image").setVideos(Collections.singletonList(new String[]{word})).setPictures(content).setAnswer(Collections.singletonList(content.indexOf(word)));

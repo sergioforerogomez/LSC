@@ -3,26 +3,32 @@
 Característica: Desarrollar nivel
 
   Como usuario
-  Desarrollar nivel entre tres categorias:
+  Quiero desarrollar niveles entre tres categorias:
   * Sustantivo
   * Verbo
   * Predicado
   Para poder practicar los conceptos u oraciones del lenguaje de señas.
 
-  Escenario: 01 Ver nivel con datos invalidos - Positivo
-    Dado que Sergio quiere ver los datos de un nivel con un id invalido
-    Cuando realiza una peticion para ver el nivel
-    Entonces el sistema retorna "Error al ver el nivel, el id no existe."
-    Y status code "400"
-
-  Escenario: 02 Ver todos los niveles - Positivo
+  Escenario: 01 Ver todos los niveles - Positivo
     Dado que Sergio quiere ver los datos de todos los niveles
-    Cuando realiza una peticion para ver los niveles
-    Entonces el sistema retorna los niveles
+    Cuando realiza una perticion para ver niveles
+    Entonces el sistema retorna una lista de niveles
     Y status code "200"
 
-  Escenario: 03 Ver practica con datos invalidos - Positivo
-    Dado que Sergio quiere ver los datos de una practica con un id invalido
-    Cuando realiza una peticion para solicitar la practica
-    Entonces el sistema retorna "Error al ver la practica, el id no existe."
-    Y status code "400"
+  Esquema del escenario: 02 Ver lecciones con datos validos - Positivo
+    Dado que Sergio quiere ver los datos de la leccion "<lesson>"
+    Cuando realiza una perticion para ver lecciones
+    Entonces el sistema retorna una lista de lecciones
+    Y status code "200"
+
+    Ejemplos:
+      | lesson      |
+      | sustantivos |
+      | verbos      |
+      | predicados  |
+
+  Escenario: 03 Ver lecciones con datos invalidos - Negativo
+    Dado que Sergio quiere ver los datos de una leccion con un id invalido
+    Cuando realiza una perticion para ver lecciones
+    Entonces el sistema retorna "Error al ver las lecciones, el nivel no existe."
+    Y status code "200"
