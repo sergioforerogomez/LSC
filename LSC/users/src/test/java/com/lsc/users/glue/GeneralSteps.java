@@ -23,7 +23,7 @@ public class GeneralSteps {
     @Entonces("^el sistema retorna un token$")
     public void elSistemaUnRetornaToken() {
         Object responseToken = then().extract().response().getBody().jsonPath().get("token");
-        assertThat(responseToken, is(nullValue()));
+        assertThat(responseToken, is(notNullValue()));
     }
 
     @Y("^el id del perfil$")

@@ -3,6 +3,7 @@ package com.lsc.users.entities;
 import com.lsc.users.dtos.Level;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class ProfileEntity {
     @Id
-    private String profileId;
+    private ObjectId profileId;
     private String email;
     private String password;
     private String name;

@@ -21,6 +21,8 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private AchievementRepository achievementRepository;
     private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private TokenService tokenService;
 
     private boolean validateTwoPasswords(String password1, String password2) {
         return password1.equals(password2);
@@ -67,7 +69,9 @@ public class UsersServiceImpl implements UsersService {
 
     private ResponseEntity<Object> validateLoginPassword(LoginInputDTO loginInputDTO, ProfileEntity profileEntity) {
         if (loginInputDTO.getPassword().equals(profileEntity.getPassword())) {
-            return new ResponseEntity<>(this.modelMapper.map(profileEntity, LoginOutputDTO.class), new HttpHeaders(), HttpStatus.OK);
+            LoginOutputDTO loginOutputDTO = this.modelMapper.map(profileEntity, LoginOutputDTO.class);
+            loginOutputDTO.setToken(this.tokenService.createToken(profileEntity.getProfileId()));
+            return new ResponseEntity<>(loginOutputDTO, new HttpHeaders(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new ErrorDTO("Error al iniciar sesion, el correo y la contraseña no coinciden."), new HttpHeaders(), HttpStatus.OK);
     }
