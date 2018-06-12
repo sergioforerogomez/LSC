@@ -1,6 +1,6 @@
 package com.lsc.users.entities;
 
-import com.lsc.users.dtos.Level;
+import com.lsc.users.dtos.ProgressName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.bson.types.ObjectId;
@@ -17,7 +17,7 @@ public class ProfileEntity {
     private String email;
     private String password;
     private String name;
-    private Level level;
+    private ProgressName progressName;
     private int generalProgress;
     private List<String> reachedAchievements;
     private List<String> completedLessons;
@@ -39,9 +39,9 @@ public class ProfileEntity {
     private void updateProgress() {
         this.generalProgress = this.completedLessons.size() * 100 / 8;
         if (this.generalProgress > 66) {
-            this.level = Level.AVANZADO;
+            this.progressName = ProgressName.AVANZADO;
         } else if (this.generalProgress > 33) {
-            this.level = Level.INTERMEDIO;
+            this.progressName = ProgressName.INTERMEDIO;
         }
     }
 

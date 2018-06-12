@@ -1,13 +1,13 @@
 package com.lsc.users.dtos;
 
-public enum Level {
+public enum ProgressName {
     BASICO("Basico"),
     INTERMEDIO("Intermedio"),
     AVANZADO("Avanzado");
 
     private String level;
 
-    Level(String level) {
+    ProgressName(String level) {
         this.level = level;
     }
 

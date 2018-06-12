@@ -15,7 +15,7 @@ public class ProfileOutputDTO {
     private String profileId;
     private String email;
     private String name;
-    private String level;
+    private String progressName;
     private int generalProgress;
     private List<String> reachedAchievements;
     private List<String> completedLessons;

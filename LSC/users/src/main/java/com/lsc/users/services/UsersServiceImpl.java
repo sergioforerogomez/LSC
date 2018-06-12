@@ -37,7 +37,7 @@ public class UsersServiceImpl implements UsersService {
         if (validatePassword(registerDTO.getPassword())) {
             if (validateTwoPasswords(registerDTO.getPassword(), registerDTO.getConfirmPassword())) {
                 ProfileEntity profileEntity = this.modelMapper.map(registerDTO, ProfileEntity.class);
-                profileEntity.setLevel(Level.BASICO);
+                profileEntity.setProgressName(ProgressName.BASICO);
                 profileEntity.setGeneralProgress(0);
                 this.profileRepository.save(profileEntity);
                 return postLogin(new LoginInputDTO(registerDTO.getEmail(), registerDTO.getPassword()));
@@ -97,7 +97,7 @@ public class UsersServiceImpl implements UsersService {
     public ResponseEntity<Object> getProfileById(String profileId) {
         if (isProfile(profileId)) {
             ProfileEntity profileEntity = this.profileRepository.findById(profileId).get();
-            return new ResponseEntity<>(this.modelMapper.map(profileEntity, ProfileOutputDTO.class).setLevel(profileEntity.getLevel().getLevel()), new HttpHeaders(), HttpStatus.OK);
+            return new ResponseEntity<>(this.modelMapper.map(profileEntity, ProfileOutputDTO.class).setProgressName(profileEntity.getProgressName().getLevel()), new HttpHeaders(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new ErrorDTO("Error al ver el perfil, el perfil no existe."), new HttpHeaders(), HttpStatus.OK);
     }
@@ -172,7 +172,7 @@ public class UsersServiceImpl implements UsersService {
             }
             updateEmail(profileEntity, profileInputDTO);
             this.profileRepository.save(profileEntity);
-            return new ResponseEntity<>(this.modelMapper.map(profileEntity, ProfileOutputDTO.class).setLevel(profileEntity.getLevel().getLevel()), new HttpHeaders(), HttpStatus.OK);
+            return new ResponseEntity<>(this.modelMapper.map(profileEntity, ProfileOutputDTO.class).setProgressName(profileEntity.getProgressName().getLevel()), new HttpHeaders(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new ErrorDTO("Error al editar el perfil, el perfil no existe."), new HttpHeaders(), HttpStatus.OK);
     }
