@@ -1,7 +1,7 @@
 package com.lsc.users.dtos;
 
 public enum ProgressName {
-    BASICO("Basico"),
+    BASICO("Básico"),
     INTERMEDIO("Intermedio"),
     AVANZADO("Avanzado");
 
