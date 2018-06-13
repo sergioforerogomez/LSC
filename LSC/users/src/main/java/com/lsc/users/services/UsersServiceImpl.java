@@ -6,6 +6,7 @@ import com.lsc.users.entities.ProfileEntity;
 import com.lsc.users.repositories.AchievementRepository;
 import com.lsc.users.repositories.ProfileRepository;
 import com.lsc.users.utils.AchievementsService;
+import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -211,5 +212,10 @@ public class UsersServiceImpl implements UsersService {
             this.achievementRepository.save(this.modelMapper.map(achievementDTO, AchievementEntity.class));
         }
         return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> getToken() {
+        return new ResponseEntity<>(new TokenDTO(tokenService.createToken(new ObjectId())), new HttpHeaders(), HttpStatus.OK);
     }
 }

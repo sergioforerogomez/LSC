@@ -25,10 +25,14 @@ public class AmazonClient {
     private String endpointUrl;
     @Value("${amazonProperties.bucketName}")
     private String bucketName;
+    @Value("${amazon.accessKey.path}")
+    private String accessKeyPath;
+    @Value("${amazon.secretKey.path}")
+    private String secretKeyPath;
 
     @PostConstruct
     private void initialize() {
-        BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(System.getenv("ACCESS_KEY"), System.getenv("SECRET_KEY"));
+        BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(Utils.getAccessKeyFromFile(accessKeyPath), Utils.getSecretKeyFromFile(secretKeyPath));
         this.amazonS3 = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).withRegion(Regions.US_EAST_1).build();
     }
 

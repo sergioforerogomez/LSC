@@ -60,4 +60,9 @@ public class UsersController {
     public ResponseEntity<Object> postUserAchievement(@RequestBody List<AchievementDTO> achievementDTOS) {
         return this.usersService.postUserAchievement(achievementDTOS);
     }
+
+    @GetMapping("/token")
+    public ResponseEntity<Object> getToken() {
+        return this.usersService.getToken();
+    }
 }

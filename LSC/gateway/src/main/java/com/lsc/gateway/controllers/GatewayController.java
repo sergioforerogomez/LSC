@@ -75,6 +75,11 @@ public class GatewayController {
         return this.usersService.postUserAchievement(achievementDTOS);
     }
 
+    @GetMapping("/token")
+    public Object getToken() {
+        return this.usersService.getToken();
+    }
+
 //    Common
 
     @GetMapping("/level")

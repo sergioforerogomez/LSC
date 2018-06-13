@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class DictionaryServiceImpl implements DictionaryService {
@@ -32,11 +31,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public ResponseEntity<Object> getWords() {
         List<WordEntity> words = this.wordRepository.findAll();
-        Collections.sort(words, new Comparator<WordEntity>() {
-            public int compare(WordEntity wordEntity1, WordEntity wordEntity2) {
-                return wordEntity1.getWord().compareTo(wordEntity2.getWord());
-            }
-        });
+        Collections.sort(words, (wordEntity1, wordEntity2) -> wordEntity1.getWord().compareTo(wordEntity2.getWord()));
         return new ResponseEntity<>(this.modelMapper.map(words, WordDTO[].class), new HttpHeaders(), HttpStatus.OK);
     }
 

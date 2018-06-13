@@ -75,4 +75,10 @@ public class UsersServiceImpl implements UsersService {
         String url = this.url + "/user/achievement";
         return this.restTemplate.postForObject(url, achievementDTOS, Object.class);
     }
+
+    @Override
+    public Object getToken() {
+        String url = this.url + "/token";
+        return this.restTemplate.getForObject(url, Object.class);
+    }
 }
